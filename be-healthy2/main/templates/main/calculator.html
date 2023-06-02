@@ -1,7 +1,7 @@
 {% block content %}
 <div class="calculator">
     <h2>Калькулятор калорий</h2>
-    <form action="{% url 'calculate' %}" method="GET">
+    <form action="{% url 'main' %}" method="GET">
         {% csrf_token %}
         <fieldset class="form-group">
             <div class="row">
