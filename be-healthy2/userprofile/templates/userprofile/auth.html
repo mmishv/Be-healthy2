@@ -1,0 +1,64 @@
+{% extends 'main/header.html' %}
+{% load static %}
+{% block title %}Авторизация{% endblock %}
+{% block head %}
+	<style>
+        .form-wrapper {
+            width: 650px;
+            margin: 3% auto 0 auto;
+            position: relative;
+            padding: 2% 3%;
+            background-color: #114630;
+            color: white;
+            border-radius: 10px;
+        }
+	</style>
+{% endblock %}
+{% block content %}
+<div class="background">
+    <div class="background-cover"></div>
+</div>
+<div>
+    <div class="form-wrapper">
+        <form method="POST" action="/login">
+            <fieldset class="form-group">
+                <h4>Вход</h4>
+                <div class="form-group row">
+                    <label for="DropdownFormLogin1" class="col-sm-4">Логин</label>
+                    <input type="text" class="form-control col-sm-8" name="login" id="DropdownFormLogin1" required>
+                </div>
+                <div class="form-group row">
+                    <label for="DropdownFormPassword1" class="col-sm-4">Пароль</label>
+                    <input type="password" class="form-control col-sm-8" name="password" id="DropdownFormPassword1"
+                           required>
+                </div>
+            </fieldset>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary btn-black scaled">Войти</button>
+            </div>
+        </form>
+        <form method="POST" action="/register">
+            <fieldset class="form-group">
+                <h4>Регистрация</h4>
+                <div class="form-group row">
+                    <label for="DropdownFormLogin2" class="col-sm-4">Логин</label>
+                    <input type="text" class="form-control col-sm-8" name="reg_login" id="DropdownFormLogin2" required>
+                </div>
+                <div class="form-group row">
+                    <label for="DropdownFormPassword2" class="col-sm-4">Пароль</label>
+                    <input type="password" class="form-control col-sm-8" name="reg_password1" id="DropdownFormPassword2"
+                           required>
+                </div>
+                <div class="form-group row">
+                    <label for="DropdownFormPassword2-repeat" class="col-sm-4">Подтвердите пароль</label>
+                    <input type="password" class="form-control col-sm-8" name="reg_password2"
+                           id="DropdownFormPassword2-repeat" required>
+                </div>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary btn-black scaled">Зарегистрироваться</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}

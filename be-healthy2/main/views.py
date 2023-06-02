@@ -1,5 +1,7 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView
+
 from .forms import CalculatorForm
 from .models import Article
 
@@ -39,3 +41,9 @@ def calculate(request):
         'result': result,
         'page': get_article_page(request),
     })
+
+
+class FullArticleView(DetailView):
+    model = Article
+    template_name = 'main/article_detail.html'
+    context_object_name = 'article'
