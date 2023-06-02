@@ -14,14 +14,15 @@
 			{% for article in page %}
 				<div class="art-back scaled">
 					<div class="article">
-						<h3 class="title"><a href="{{ article.slug }}">{{ article.title }}
+						<h3 class="title"><a href="{% url 'article details' article.id article.slug %}">{{ article.title }}
 						</a>
 						</h3>
 						{% for cat in article.categories.all %}
-							<div class="category" style="display: inline">{{ cat.name }}
+							<div class="category" style="display: inline">{{ cat.name}}
 							</div>
 						{% endfor %}
-						<h6 class="article-text">{{ article.full_text }}
+						<h6 class="article-text">
+							{{ article.full_text }}
 						</h6>
 					</div>
 				</div>

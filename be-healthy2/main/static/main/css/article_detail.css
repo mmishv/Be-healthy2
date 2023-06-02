@@ -1,0 +1,61 @@
+.article-wrapper {
+    position: relative;
+    margin: 3% auto;
+    padding: 2% 3%;
+    width: 75%;
+    background-color: white;
+}
+
+#article-text {
+    white-space: pre-line;
+    margin-top: 1%;
+}
+
+.author {
+    margin-right: 0.5%;
+}
+
+.author, #article-categories {
+    display: flex;
+    justify-content: end;
+}
+
+#article-title {
+    color: black !important;
+    text-align: center;
+}
+
+#article-author {
+    display: inline;
+}
+
+#article-categories {
+    width: 100%;
+    position: relative;
+}
+
+#article-categories h6 {
+    max-width: 30%;
+    width: fit-content;
+    text-align: right;
+    background-color: #8af08a87;
+    padding: 1%;
+}
+
+.back-btn {
+    background-color: #00000000 !important;
+    border: solid 2px white !important;
+    color: white !important;
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 3%;
+}
+
+.back-btn a {
+    color: white !important;
+}
+
+.back-btn a:hover {
+    color: white !important;
+    text-decoration: none !important;
+}
