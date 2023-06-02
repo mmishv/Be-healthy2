@@ -46,6 +46,9 @@ class Profile(models.Model):
     fats = models.DecimalField(max_digits=4, decimal_places=1, default=60.0)
     carbohydrates = models.DecimalField(max_digits=4, decimal_places=1, default=250.0)
 
+    def __str__(self):
+        return self.user.username
+
     def __unicode__(self):
         return self.user
 
