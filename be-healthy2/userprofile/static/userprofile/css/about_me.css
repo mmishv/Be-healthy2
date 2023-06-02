@@ -1,0 +1,172 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+/*navbar*/
+.sections {
+    background-color: #114630 !important;
+    height: 100vh;
+    padding: 0 !important;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    height: 120%;
+}
+
+.list-group-item {
+    background-color: #00000000 !important;
+    color: white;
+    font-weight: 500;
+}
+
+/*main*/
+.wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.inf {
+    width: 60%;
+    margin: 2% auto;
+    padding: 1% 2%;
+    background-color: #114630db;
+    border-radius: 10px;
+}
+
+.inf h2 {
+    margin-left: 3%;
+    align-self: center;
+}
+
+.photo {
+    object-fit: cover;
+    object-position: center;
+    height: 8vw;
+    width: 8vw;
+    border-radius: 50%;
+    border: solid 1px white;
+}
+
+.row {
+    margin: 0 !important;
+}
+
+form {
+    color: white;
+    font-size: large;
+}
+
+.form-group.row, .general-inf {
+    margin-bottom: 2% !important;
+}
+
+.general-inf {
+    justify-content: end;
+}
+
+h5 {
+    text-align: center;
+    margin: 2% 0 0 0 !important;
+}
+
+.param-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+
+.param {
+    width: 30% !important;
+}
+
+.col-form-label.center {
+    text-align: center;
+}
+
+.modal-title, .modal-body label {
+    color: black;
+}
+
+input[type='radio'].large:checked:after {
+    height: 18px !important;
+    width: 18px !important;
+    left: -4px !important;
+}
+
+input[type='radio'].large:checked:after {
+    top: -5px !important
+}
+
+select.form-control {
+    width: 54% !important;
+    margin-left: 2% !important;
+}
+
+/*buttons*/
+.save-btn {
+    font-size: large !important;
+    width: 100%;
+    margin: 2% auto 0 auto;
+}
+
+#close-btn {
+    background-color: #114630 !important;
+    opacity: 0.9;
+    border: none;
+}
+
+.edit-btn {
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    height: 2.5rem;
+}
+
+.edit-btn:focus, .edit-btn:focus-visible, .edit-btn:active {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.exit-buttons {
+    position: absolute;
+    margin-top: 3vh;
+    right: 5%;
+    display: flex;
+    justify-content: start;
+    width: fit-content;
+    flex-direction: column;
+}
+
+.back-btn, .admin-btn {
+    background-color: black !important;
+    border: solid 2px white !important;
+    color: white !important;
+}
+
+.admin-btn {
+    margin-top: 10%;
+}
+
+.back-btn a, .admin-btn a {
+    color: white !important;
+}
+
+.back-btn a:hover, .admin-btn a:hover {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.back-btn svg {
+    vertical-align: text-bottom;
+}
+
+/*modal*/
+#editModal {
+    margin-left: 17% !important;
+    width: 83% !important;
+}
