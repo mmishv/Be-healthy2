@@ -12,8 +12,8 @@ def index(request):
 
 
 def get_article_page(request):
-    articles = Article.objects.all()
-    paginator = Paginator(articles, 1)
+    articles = Article.objects.filter(moderated=True)
+    paginator = Paginator(articles, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return page
