@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from .forms import CalculatorForm
+from .models import Article
 
 
 def index(request):
     return render(request, 'main/main.html', {
-        'form': CalculatorForm()
+        'form': CalculatorForm(),
+        'page': Article.objects.all(),
     })
 
 
@@ -26,4 +28,5 @@ def calculate(request):
     return render(request, 'main/main.html', {
         'form': CalculatorForm(request.GET),
         'result': result,
+        'page': Article.objects.all(),
     })

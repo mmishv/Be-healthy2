@@ -1,39 +1,34 @@
 {% extends 'main/header.html' %}
 {% load static %}
 {% block title %}Главная{% endblock %}
+{% block head %}
+		<link rel="stylesheet" href="../../static/main/css/main.css">
+{% endblock %}
 {% block content %}
 <div class="background">
     <div class="background-cover"></div>
 </div>
 <div style="display: flex">
     {% include 'main/calculator.html'%}
-
-{% comment %}     <%
-        ArrayList<Article> articles = new ObjectMapper().readValue(request.getAttribute("articles").toString(),
-                new TypeReference<ArrayList<Article>>() {
-                });
-        request.setAttribute("articles", articles);
-    %> {% endcomment %}
     <div class="articles-wrapper col-sm-5">
-{% comment %}         <c:forEach items="${articles}" var="article" varStatus="loop">
+        {% for article in page %}
             <div class="art-back scaled">
                 <div class="article">
-                    <h3 class="title"><a href="/article/${article.id}">${article.title}
+                    <h3 class="title"><a href="{{article.slug}}">{{ article.title }}
                     </a>
                     </h3>
-                    <c:forEach items="${article.categories}" var="cat" varStatus="loop">
-
-                        <div class="category" style="display: inline">${cat.name.toLowerCase()}
+                    {% for cat in article.categories.all %}
+                        <div class="category" style="display: inline">{{ cat.name }}
                         </div>
-                    </c:forEach>
-                    <h6 class="article-text">${article.fulltext}
+                    {% endfor %}
+                    <h6 class="article-text">{{ article.full_text }}
                     </h6>
                 </div>
             </div>
-        </c:forEach> {% endcomment %}
+        {% endfor %}
         <nav>
             <ul class="pagination justify-content-center">
-{% comment %}                 <c:if test="${cur_page>1}">
+{% comment %}                  <c:if test="${cur_page>1}">
                     <li class="page-item">
                         <a class="page-link" href="${cur_page-1}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
@@ -41,7 +36,7 @@
                         </a>
                     </li>
                 </c:if>
-                <c:forEach begin="1" end="${page_cnt}" varStatus="i">
+                <c:forEach begin="1" end="${page_cn}" varStatus="i">
                     <li class="page-item"><a class="page-link" href="${i.count}">${i.count}
                     </a></li>
                 </c:forEach>
@@ -53,7 +48,7 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </li>
-                </c:if> {% endcomment %}
+                </c:if>  {% endcomment %}
             </ul>
         </nav>
     </div>
