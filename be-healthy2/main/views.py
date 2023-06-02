@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from .forms import CalculatorForm
 from .models import Article
@@ -6,8 +7,16 @@ from .models import Article
 def index(request):
     return render(request, 'main/main.html', {
         'form': CalculatorForm(),
-        'page': Article.objects.all(),
+        'page': get_article_page(request),
     })
+
+
+def get_article_page(request):
+    articles = Article.objects.all()
+    paginator = Paginator(articles, 1)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return page
 
 
 def calculate(request):
@@ -28,5 +37,5 @@ def calculate(request):
     return render(request, 'main/main.html', {
         'form': CalculatorForm(request.GET),
         'result': result,
-        'page': Article.objects.all(),
+        'page': get_article_page(request),
     })
