@@ -1,0 +1,58 @@
+{% block content %}
+<div class="calculator">
+    <h2>Калькулятор калорий</h2>
+    <form action="{% url 'calculate' %}" method="GET">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-label col-sm-3 pt-0">Пол:</legend>
+                <div class="col-sm-9">
+	                {% for radio in form.sex %}
+		                <div class="form-check form-check-inline">
+                        {{ radio }}
+                        <label class="form-check-label" for="{{ radio.id_for_label }}">
+	                        {{ radio.label}} &nbsp; &nbsp; </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group row">
+            <label for="{{ form.height.id_for_label }}" class="col-sm-3 col-form-label">Рост:</label>
+            <div class="col-sm-9">
+                {{ form.height }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.weight.id_for_label }}" class="col-sm-3 col-form-label">Вес:</label>
+            <div class="col-sm-9">
+                {{ form.weight }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.age.id_for_label }}" class="col-sm-3 col-form-label">Возраст:</label>
+            <div class="col-sm-9">
+                {{ form.age }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.activity.id_for_label }}" class="col-sm-3 col-form-label">Физическая активность</label>
+	        {{ form.activity }}
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.goal.id_for_label }}" class="col-sm-3 col-form-label">Цель</label>
+	        {{ form.goal }}
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary btn-black scaled">Рассчитать</button>
+            </div>
+            <div class="col-sm-3">
+                <button type="reset" class="btn btn-primary scaled"
+                        style="background-color: #00000000; border: solid 2px white;">Сбросить</button>
+            </div>
+        </div>
+        <h5>Результат: {{ result }}</h5>
+    </form>
+</div>
+
+{% endblock %}
