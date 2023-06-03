@@ -5,9 +5,12 @@ from django import forms
 
 
 class RegistrationForm(UserCreationForm):
-    username = forms.CharField(label='Логин', min_length=5, max_length=150, required=True)
-    password1 = forms.CharField(label='Пароль', min_length=8, widget=forms.PasswordInput, required=True)
-    password2 = forms.CharField(label='Подтвердите пароль', min_length=8, widget=forms.PasswordInput, required=True)
+    username = forms.CharField(label='Логин', min_length=5, max_length=150, required=True,
+                               widget=forms.TextInput(attrs={'class': "form-control col-sm-8"}))
+    password1 = forms.CharField(label='Пароль', min_length=8, widget=forms.PasswordInput(
+        attrs={'class': "form-control col-sm-8"}), required=True)
+    password2 = forms.CharField(label='Подтвердите пароль', min_length=8, widget=forms.PasswordInput(
+        attrs={'class': "form-control col-sm-8"}), required=True)
 
     def username_clean(self):
         username = self.cleaned_data['username'].lower()
@@ -33,5 +36,7 @@ class RegistrationForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Логин', min_length=5, max_length=150)
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+    username = forms.CharField(label='Логин', min_length=5, max_length=150, required=True,
+                               widget=forms.TextInput(attrs={'class': "form-control col-sm-8"}))
+    password = forms.CharField(label='Пароль',  widget=forms.PasswordInput(
+        attrs={'class': "form-control col-sm-8"}), required=True)

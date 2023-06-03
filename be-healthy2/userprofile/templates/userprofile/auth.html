@@ -20,39 +20,43 @@
 </div>
 <div>
     <div class="form-wrapper">
-        <form method="POST" action="/login">
+        <form method="POST" action="{% url 'login' %}">
+	        {% csrf_token %}
             <fieldset class="form-group">
                 <h4>Вход</h4>
                 <div class="form-group row">
-                    <label for="DropdownFormLogin1" class="col-sm-4">Логин</label>
-                    <input type="text" class="form-control col-sm-8" name="login" id="DropdownFormLogin1" required>
+                    <label for="{{ log_form.username.id_for_label }}" class="col-sm-4">
+	                    {{ log_form.username.label }}</label>
+	                {{ log_form.username }}
                 </div>
                 <div class="form-group row">
-                    <label for="DropdownFormPassword1" class="col-sm-4">Пароль</label>
-                    <input type="password" class="form-control col-sm-8" name="password" id="DropdownFormPassword1"
-                           required>
+                    <label for="{{ log_form.password.id_for_label }}" class="col-sm-4">
+	                    {{ log_form.password.label }}</label>
+	                {{ log_form.password }}
                 </div>
             </fieldset>
             <div style="display: flex; justify-content: flex-end;">
                 <button type="submit" class="btn btn-primary btn-black scaled">Войти</button>
             </div>
         </form>
-        <form method="POST" action="/register">
+        <form method="POST" action="{% url 'register' %}">
+	        {% csrf_token %}
             <fieldset class="form-group">
                 <h4>Регистрация</h4>
                 <div class="form-group row">
-                    <label for="DropdownFormLogin2" class="col-sm-4">Логин</label>
-                    <input type="text" class="form-control col-sm-8" name="reg_login" id="DropdownFormLogin2" required>
+                    <label for="{{ reg_form.username.id_for_label }}" class="col-sm-4">
+	                    {{ reg_form.username.label }}</label>
+	                {{ reg_form.username }}
                 </div>
                 <div class="form-group row">
-                    <label for="DropdownFormPassword2" class="col-sm-4">Пароль</label>
-                    <input type="password" class="form-control col-sm-8" name="reg_password1" id="DropdownFormPassword2"
-                           required>
+                    <label for="{{ reg_form.password1.id_for_label }}" class="col-sm-4">
+	                    {{ reg_form.password1.label }}</label>
+	                {{ reg_form.password1 }}
                 </div>
                 <div class="form-group row">
-                    <label for="DropdownFormPassword2-repeat" class="col-sm-4">Подтвердите пароль</label>
-                    <input type="password" class="form-control col-sm-8" name="reg_password2"
-                           id="DropdownFormPassword2-repeat" required>
+                    <label for="{{ reg_form.password2.id_for_label }}" class="col-sm-4">
+	                    {{ reg_form.password2.label }}</label>
+	                {{ reg_form.password2 }}
                 </div>
                 <div style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary btn-black scaled">Зарегистрироваться</button>
