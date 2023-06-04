@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
+
+from userprofile.models import Profile
 
 
 class RegistrationForm(UserCreationForm):
@@ -13,8 +14,8 @@ class RegistrationForm(UserCreationForm):
         attrs={'class': "form-control col-sm-8"}), required=True)
 
     def username_clean(self):
-        username = self.cleaned_data['username'].lower()
-        new = User.objects.filter(username=username)
+        username = self.cleaned_data['username']
+        new = Profile.objects.filter(username=username)
         if new.count():
             raise ValidationError("К сожалению, такой логин уже занят")
         return username
@@ -27,7 +28,7 @@ class RegistrationForm(UserCreationForm):
         return password2
 
     def save(self, commit=True):
-        user = User.objects.create_user(
+        user = Profile.objects.create_user(
             self.cleaned_data['username'],
             None,
             self.cleaned_data['password1']
@@ -40,3 +41,17 @@ class LoginForm(AuthenticationForm):
                                widget=forms.TextInput(attrs={'class': "form-control col-sm-8"}))
     password = forms.CharField(label='Пароль',  widget=forms.PasswordInput(
         attrs={'class': "form-control col-sm-8"}), required=True)
+
+    def username_clean(self):
+        username = self.cleaned_data['username']
+        new = Profile.objects.filter(username=username)
+        if not new.count():
+            raise forms.ValidationError('Пользователя с таким логином не существует')
+        return username
+
+    def clean_password(self):
+        username = self.cleaned_data['username']
+        password = self.cleaned_data['password']
+        user = Profile.objects.get(username=username)
+        if user and not user.check_password(password):
+            raise forms.ValidationError('Неверный пароль')

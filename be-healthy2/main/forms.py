@@ -43,3 +43,4 @@ class CalculatorForm(forms.Form):
         label='Цель',
         widget=forms.Select(attrs={'class': 'form-control col-sm-8'})
     )
+
