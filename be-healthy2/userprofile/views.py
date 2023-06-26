@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from django.views import View
@@ -12,25 +11,25 @@ class RegisterView(View):
                       {'reg_form': RegistrationForm(), 'log_form': LoginForm()})
 
     def post(self, request):
-        reg_form = RegistrationForm(request.POST)
-        if reg_form.is_valid():
-            user = reg_form.save()
-            login(request, user)
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            login(request, form.save())
             return redirect('/')
         return render(request, 'userprofile/auth.html',
-                      {'reg_form': reg_form, 'log_form': LoginForm()})
+                      {'reg_form': form, 'log_form': LoginForm()})
 
 
 class LoginView(View):
     def post(self, request):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/')
         else:
-            messages.info(request, 'Пользователя с такими данными не существует')
             return render(request, 'userprofile/auth.html',
                           {'reg_form': RegistrationForm(), 'log_form': LoginForm(request.POST)})
 

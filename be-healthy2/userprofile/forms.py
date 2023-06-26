@@ -6,12 +6,6 @@ from django import forms
 from userprofile.models import Profile
 
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ["username", "password"]
-
-
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(label='Логин', min_length=5, max_length=150, required=True,
                                widget=forms.TextInput(attrs={'class': "form-control col-sm-8"}))
@@ -24,14 +18,10 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = ("username", "password1", "password2")
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(RegistrationForm, self).form_valid(form)
-
-    def username_clean(self):
+    def clean_username(self):
         username = self.cleaned_data['username']
-        new = Profile.objects.filter(username=username)
-        if new.count():
+        new = User.objects.filter(username=username)
+        if new.count() > 0:
             raise ValidationError("К сожалению, такой логин уже занят")
         return username
 
@@ -48,18 +38,18 @@ class RegistrationForm(UserCreationForm):
             None,
             self.cleaned_data['password1']
         )
-        user = Profile(user=user)
-        user.save()
+        # user = Profile(user=user)
+        # user.save()
         return user
 
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label='Логин', min_length=5, max_length=150, required=True,
                                widget=forms.TextInput(attrs={'class': "form-control col-sm-8"}))
-    password = forms.CharField(label='Пароль',  widget=forms.PasswordInput(
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(
         attrs={'class': "form-control col-sm-8"}), required=True)
 
-    def username_clean(self):
+    def clean_username(self):
         username = self.cleaned_data['username']
         new = Profile.objects.filter(username=username)
         if not new.count():

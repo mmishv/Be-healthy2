@@ -34,9 +34,9 @@ class RoleOptions(models.TextChoices):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=CASCADE)
     avatar = models.ImageField(upload_to='images/users', verbose_name='Аватар', null=True, blank=True)
-    age = models.PositiveSmallIntegerField()
-    height = models.PositiveSmallIntegerField()
-    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    age = models.PositiveSmallIntegerField(null=True)
+    height = models.PositiveSmallIntegerField(null=True)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     activity = models.DecimalField(choices=ACTIVITY_CHOICES, default=1.0, max_digits=4, decimal_places=3)
     goal = models.DecimalField(choices=GOAL_CHOICES, default=1, max_digits=2, decimal_places=1)
     sex = models.CharField(max_length=1, choices=SexOptions.choices, default=SexOptions.FEMALE)
