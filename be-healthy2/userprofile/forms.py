@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
+from main.forms import ACTIVITY_CHOICES, SEX_CHOICES, GOAL_CHOICES
 from userprofile.models import Profile
 
 
@@ -61,3 +62,16 @@ class LoginForm(AuthenticationForm):
         user = User.objects.get(username=username)
         if user and not user.check_password(password):
             raise forms.ValidationError('Неверный пароль')
+
+
+class AboutMeProfileForm(forms.Form):
+    sex = forms.ChoiceField(choices=SEX_CHOICES, widget=forms.RadioSelect())
+    height = forms.IntegerField(label='Рост', required=False)
+    weight = forms.FloatField(label='Вес', required=False)
+    age = forms.IntegerField(label='Возраст', required=False)
+    activity = forms.ChoiceField(choices=ACTIVITY_CHOICES)
+    goal = forms.ChoiceField(choices=GOAL_CHOICES)
+    k = forms.FloatField(label='Калории, г', required=False)
+    b = forms.FloatField(label='Белки, г', required=False)
+    j = forms.FloatField(label='Жиры, г', required=False)
+    u = forms.FloatField(label='Углеводы, г', required=False)
