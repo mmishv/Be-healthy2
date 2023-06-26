@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
-from userprofile.models import Profile
-
 
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(label='Логин', min_length=5, max_length=150, required=True,
@@ -51,7 +49,7 @@ class LoginForm(AuthenticationForm):
 
     def clean_username(self):
         username = self.cleaned_data['username']
-        new = Profile.objects.filter(username=username)
+        new = User.objects.filter(username=username)
         if not new.count():
             raise forms.ValidationError('Пользователя с таким логином не существует')
         return username
@@ -59,6 +57,6 @@ class LoginForm(AuthenticationForm):
     def clean_password(self):
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']
-        user = Profile.objects.get(username=username)
+        user = User.objects.get(username=username)
         if user and not user.check_password(password):
             raise forms.ValidationError('Неверный пароль')

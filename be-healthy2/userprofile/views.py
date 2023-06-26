@@ -11,7 +11,7 @@ class RegisterView(View):
                       {'reg_form': RegistrationForm(), 'log_form': LoginForm()})
 
     def post(self, request):
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(data=request.POST)
         if form.is_valid():
             login(request, form.save())
             return redirect('/')
@@ -21,7 +21,7 @@ class RegisterView(View):
 
 class LoginView(View):
     def post(self, request):
-        form = LoginForm(request.POST)
+        form = LoginForm(data=request.POST)
         if form.is_valid():
             username = request.POST.get('username')
             password = request.POST.get('password')
