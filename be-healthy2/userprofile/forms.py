@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
+from userprofile.models import Profile
+
 
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(label='Логин', min_length=5, max_length=150, required=True,
@@ -36,8 +38,7 @@ class RegistrationForm(UserCreationForm):
             None,
             self.cleaned_data['password1']
         )
-        # user = Profile(user=user)
-        # user.save()
+        Profile.objects.create(user=user)
         return user
 
 
