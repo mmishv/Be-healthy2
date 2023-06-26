@@ -1,8 +1,15 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
 from userprofile.models import Profile
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["username", "password"]
 
 
 class RegistrationForm(UserCreationForm):
@@ -12,6 +19,14 @@ class RegistrationForm(UserCreationForm):
         attrs={'class': "form-control col-sm-8"}), required=True)
     password2 = forms.CharField(label='Подтвердите пароль', min_length=8, widget=forms.PasswordInput(
         attrs={'class': "form-control col-sm-8"}), required=True)
+
+    class Meta:
+        model = User
+        fields = ("username", "password1", "password2")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(RegistrationForm, self).form_valid(form)
 
     def username_clean(self):
         username = self.cleaned_data['username']
@@ -28,11 +43,13 @@ class RegistrationForm(UserCreationForm):
         return password2
 
     def save(self, commit=True):
-        user = Profile.objects.create_user(
+        user = User.objects.create_user(
             self.cleaned_data['username'],
             None,
             self.cleaned_data['password1']
         )
+        user = Profile(user=user)
+        user.save()
         return user
 
 
