@@ -37,7 +37,7 @@ class Profile(models.Model):
     age = models.PositiveSmallIntegerField(null=True)
     height = models.PositiveSmallIntegerField(null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    activity = models.DecimalField(choices=ACTIVITY_CHOICES, default=1.0, max_digits=4, decimal_places=3)
+    activity = models.DecimalField(choices=ACTIVITY_CHOICES, default=1.0, max_digits=5, decimal_places=3)
     goal = models.DecimalField(choices=GOAL_CHOICES, default=1, max_digits=2, decimal_places=1)
     sex = models.CharField(max_length=1, choices=SexOptions.choices, default=SexOptions.FEMALE)
     role = models.CharField(max_length=1, choices=RoleOptions.choices, default=RoleOptions.USER)

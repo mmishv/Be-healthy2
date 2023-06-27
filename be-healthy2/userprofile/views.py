@@ -20,7 +20,7 @@ def get_about_me(request):
 class ProfileAboutMeUpdateView(UpdateView):
     model = Profile
     form_class = AboutMeProfileForm
-    success_url = '/profile'
+    success_url = '/profile/main'
     template_name = 'userprofile/auth.html'
 
     def get_object(self, queryset=None):

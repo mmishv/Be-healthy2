@@ -107,7 +107,7 @@
 						<label for="goal" class="col-sm-5 col-form-label">Цель:</label>
 						<select name="goal" class="form-control" id="goal">
 							{% for value, label in form.goal.field.choices %}
-								<option value="{{ value|floatformat }}"
+								<option value="{{ value }}"
 										{% if profile.goal|floatformat == value|floatformat %}
 										selected {% endif %}>
 									{{ label }}
@@ -119,7 +119,7 @@
 						<label for="activity" class="col-sm-5 col-form-label">Физическая активность:</label>
 						<select name="activity" class="form-control" id="activity">
 							{% for value, label in form.activity.field.choices %}
-								<option value="{{ value|floatformat }}"
+								<option value="{{ value }}"
 										{% if profile.activity|floatformat == value|floatformat %}
 										selected {% endif %}>
 									{{ label }}
