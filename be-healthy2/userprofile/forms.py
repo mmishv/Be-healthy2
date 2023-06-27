@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
-from main.forms import ACTIVITY_CHOICES, SEX_CHOICES, GOAL_CHOICES
 from userprofile.models import Profile
 
 
@@ -64,21 +63,21 @@ class LoginForm(AuthenticationForm):
             raise forms.ValidationError('Неверный пароль')
 
 
-class AboutMeProfileForm(forms.Form):
-    sex = forms.ChoiceField(choices=SEX_CHOICES, widget=forms.RadioSelect())
-    height = forms.IntegerField(label='Рост', required=False)
-    weight = forms.FloatField(label='Вес', required=False)
-    age = forms.IntegerField(label='Возраст', required=False)
-    activity = forms.ChoiceField(choices=ACTIVITY_CHOICES)
-    goal = forms.ChoiceField(choices=GOAL_CHOICES)
-    k = forms.FloatField(label='Калории, г', required=False)
-    b = forms.FloatField(label='Белки, г', required=False)
-    j = forms.FloatField(label='Жиры, г', required=False)
-    u = forms.FloatField(label='Углеводы, г', required=False)
+class AboutMeProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['sex', 'height', 'weight', 'age', 'activity', 'goal', 'calories', 'fats', 'proteins', 'carbohydrates']
+        widgets = {
+            'sex': forms.RadioSelect(),
+            'height': forms.NumberInput(attrs={'placeholder': 'Рост, см'}),
+            'weight': forms.NumberInput(attrs={'placeholder': 'Вес'}),
+            'age': forms.NumberInput(attrs={'placeholder': 'Возраст'}),
+        }
 
 
 class MainInfoProfileForm(forms.Form):
     avatar = forms.ImageField(label='Загрузить фото', required=False,
                               widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}))
     name = forms.CharField(label='Новое имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
+
     submit = forms.CharField(widget=forms.HiddenInput(), initial='profile', required=False)
