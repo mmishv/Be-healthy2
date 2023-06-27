@@ -43,7 +43,7 @@
 						{% if profile.avatar %}
 							<img src="data:image/jpeg;base64,${profile.getBase64image()}" class="photo">
 						{% else %}
-							<img src="../../../../main/static/assets/profile.png" class="photo">
+							<img src="{% static 'assets/profile.png' %}" class="photo">
 						{% endif %}
 						<div class="col-sm-7"
 						     style="display: inline-flex; justify-content: space-between; padding-right: 0">
