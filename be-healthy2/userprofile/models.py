@@ -55,3 +55,23 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
+
+    @property
+    def calories_recommendation(self):
+        if not self.weight or not self.height or not self.age:
+            return 0
+        return int(447.6 + 9.2 * float(
+            self.weight) + 3.1 * self.height - 4.3 * self.age if self.sex == 'F' else 88.36 + 13.4 * float(
+            self.weight) + 4.8 * self.height - 5.7 * self.age * float(self.activity) * float(self.goal))
+
+    @property
+    def proteins_recommendation(self):
+        return int(self.calories_recommendation * 0.3/4)
+
+    @property
+    def fats_recommendation(self):
+        return int(self.calories_recommendation * 0.3/9)
+
+    @property
+    def carbohydrates_recommendation(self):
+        return int(self.calories_recommendation * 0.4/4)
