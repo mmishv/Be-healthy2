@@ -77,7 +77,7 @@ class AboutMeProfileForm(forms.ModelForm):
 
 class MainInfoProfileForm(forms.ModelForm):
     avatar = forms.ImageField(label='Аватар', required=False)
-    first_name = forms.CharField(label='Имя', max_length=150)
+    first_name = forms.CharField(label='Имя', max_length=150, required=False)
 
     class Meta:
         model = Profile
