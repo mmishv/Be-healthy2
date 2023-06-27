@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import UpdateView
@@ -17,7 +18,7 @@ def get_about_me(request):
                                                                  'modal_form': MainInfoProfileForm()})
 
 
-class ProfileAboutMeUpdateView(UpdateView):
+class ProfileAboutMeUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = AboutMeProfileForm
     success_url = '/profile/main'
@@ -30,6 +31,21 @@ class ProfileAboutMeUpdateView(UpdateView):
         profile = form.save(commit=False)
         profile.save()
         return super().form_valid(form)
+
+
+class MainInfoProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    form_class = MainInfoProfileForm
+    success_url = '/profile/main'
+    template_name = 'userprofile/auth.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
 
 
 class RegisterView(View):
@@ -61,7 +77,7 @@ class LoginView(View):
                           {'reg_form': RegistrationForm(), 'log_form': LoginForm(request.POST)})
 
 
-class LogoutView(View):
+class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect('/')
