@@ -75,9 +75,31 @@ class AboutMeProfileForm(forms.ModelForm):
         }
 
 
-class MainInfoProfileForm(forms.Form):
-    avatar = forms.ImageField(label='Загрузить фото', required=False,
-                              widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}))
-    name = forms.CharField(label='Новое имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
+class MainInfoProfileForm(forms.ModelForm):
+    avatar = forms.ImageField(label='Аватар', required=False)
+    first_name = forms.CharField(label='Имя', max_length=150)
 
-    submit = forms.CharField(widget=forms.HiddenInput(), initial='profile', required=False)
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'first_name']
+
+    user = None
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if self.user:
+            self.fields['first_name'].initial = self.user.first_name
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        if self.cleaned_data['first_name']:
+            if self.user:
+                self.user.first_name = self.cleaned_data['first_name']
+                if commit:
+                    self.user.save()
+        if self.cleaned_data['avatar']:
+            profile.avatar = self.cleaned_data['avatar']
+        if commit:
+            profile.save()
+        return profile
