@@ -75,3 +75,10 @@ class AboutMeProfileForm(forms.Form):
     b = forms.FloatField(label='Белки, г', required=False)
     j = forms.FloatField(label='Жиры, г', required=False)
     u = forms.FloatField(label='Углеводы, г', required=False)
+
+
+class MainInfoProfileForm(forms.Form):
+    avatar = forms.ImageField(label='Загрузить фото', required=False,
+                              widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}))
+    name = forms.CharField(label='Новое имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    submit = forms.CharField(widget=forms.HiddenInput(), initial='profile', required=False)

@@ -2,14 +2,16 @@ from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from django.views import View
 
-from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm
+from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm, MainInfoProfileForm
 from userprofile.models import Profile
 
 
 def get_about_me(request):
     user = request.user
     profile = Profile.objects.get(user=user)
-    return render(request, 'userprofile/general/about_me.html', {'profile': profile, 'form': AboutMeProfileForm()})
+    return render(request, 'userprofile/general/about_me.html', {'profile': profile,
+                                                                 'form': AboutMeProfileForm(),
+                                                                 'modal_form': MainInfoProfileForm()})
 
 
 class RegisterView(View):
