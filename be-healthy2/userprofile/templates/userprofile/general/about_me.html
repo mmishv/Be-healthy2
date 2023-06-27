@@ -15,7 +15,7 @@
 		<div class="col-sm-10">
 			<div class="exit-buttons">
 				<button class="btn btn-primary back-btn">
-					<a href="logout">
+					<a href="{% url 'logout' %}">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
 						     class="bi bi-box-arrow-left" viewBox="0 0 16 16">
 							<path fill-rule="evenodd"
@@ -37,7 +37,7 @@
 				{% endif %}
 			</div>
 			<div class="inf">
-				<form method="post" action="edit_profile">
+				<form method="post" action="{% url 'update parameters' %}">
 					{% csrf_token %}
 					<div class="row general-inf">
 						{% if profile.avatar %}
@@ -71,8 +71,8 @@
 									<div class="form-check form-check-inline">
 										<input name="sex" class="form-check-input large" type="radio"
 										       id="{{ radio.id_for_label }}"
-										       value="{{ radio.choice_value }}"
-										       {% if radio.choice_label == profile.get_sex_display %}checked{% endif %}>
+										       value="{{ radio.data.value}}"
+										       {% if radio.choice_label == profile.get_sex_display %} checked{% endif %} >
 										<label class="form-check-label" for="{{ radio.id_for_label }}">
 											{{ radio.choice_label }}
 										</label>
@@ -107,8 +107,9 @@
 						<label for="goal" class="col-sm-5 col-form-label">Цель:</label>
 						<select name="goal" class="form-control" id="goal">
 							{% for value, label in form.goal.field.choices %}
-								<option value="{{ value }}" {% if profile.goal|floatformat == value|floatformat %}
-								        selected {% endif %}>
+								<option value="{{ value|floatformat }}"
+										{% if profile.goal|floatformat == value|floatformat %}
+										selected {% endif %}>
 									{{ label }}
 								</option>
 							{% endfor %}
@@ -116,10 +117,11 @@
 					</div>
 					<div class="form-group row">
 						<label for="activity" class="col-sm-5 col-form-label">Физическая активность:</label>
-						<select name="goal" class="form-control" id="activity">
+						<select name="activity" class="form-control" id="activity">
 							{% for value, label in form.activity.field.choices %}
-								<option value="{{ value }}" {% if profile.activity|floatformat == value|floatformat %}
-								        selected {% endif %}>
+								<option value="{{ value|floatformat }}"
+										{% if profile.activity|floatformat == value|floatformat %}
+										selected {% endif %}>
 									{{ label }}
 								</option>
 							{% endfor %}
@@ -127,26 +129,26 @@
 					</div>
 					<div class="form-group row">
 						<h5 class="col-sm-12">Задать ограничения на суточную норму</h5>
-						<label for="k" class="col-sm-3 col-form-label center">Калории, г</label>
-						<label for="b" class="col-sm-3 col-form-label center">Белки, г</label>
-						<label for="j" class="col-sm-3 col-form-label center">Жиры, г</label>
-						<label for="u" class="col-sm-3 col-form-label center">Углеводы, г</label>
+						<label for="calories" class="col-sm-3 col-form-label center">Калории, г</label>
+						<label for="proteins" class="col-sm-3 col-form-label center">Белки, г</label>
+						<label for="fats" class="col-sm-3 col-form-label center">Жиры, г</label>
+						<label for="carbohydrates" class="col-sm-3 col-form-label center">Углеводы, г</label>
 						<div class="col-sm-3">
-							<input name="k" class="form-control" id="k" type="number" step="any"
+							<input name="calories" class="form-control" id="calories" type="number" step="any"
 							       placeholder="{{ profile.calories_recommendation }}" value="{{ profile.calories }}">
 						</div>
 						<div class="col-sm-3">
-							<input name="b" class="form-control" id="b" type="number" step="any"
+							<input name="proteins" class="form-control" id="proteins" type="number" step="any"
 							       placeholder="{{ profile.proteins_recommendation }}" value="{{ profile.proteins }}">
 						</div>
 
 						<div class="col-sm-3">
-							<input name="j" class="form-control" id="j" type="number" step="any"
+							<input name="fats" class="form-control" id="fats" type="number" step="any"
 							       placeholder="{{ profile.fats_recommendation }}" value="{{ profile.fats }}">
 						</div>
 
 						<div class="col-sm-3">
-							<input name="u" class="form-control" id="u" type="number" step="any"
+							<input name="carbohydrates" class="form-control" id="carbohydrates" type="number" step="any"
 							       placeholder="{{ profile.carbohydrates_recommendation }}"
 							       value="{{ profile.carbohydrates }}">
 						</div>
@@ -154,8 +156,7 @@
 					<h6 class="col-sm-12">
 						{% if profile.calories_recommendation != 0 %}
 							* рекомедуется: {{ profile.calories_recommendation }} ккал,
-							{{ profile.proteins_recommendation }}/{{ profile.fats_recommendation }}/
-							{{ profile.carbohydrates_recommendation }}
+							{{ profile.proteins_recommendation }}/{{ profile.fats_recommendation }}/{{ profile.carbohydrates_recommendation }}
 						{% else %}
 							* пожалуйста, введите информацию о своем росте, возрасте и весе, чтобы мы могли дать Вам
 							рекомендации
@@ -163,7 +164,9 @@
 					</h6>
 					<div class="form-group row" style="justify-content: end;">
 						<div class="col-sm-5">
-							<button class="btn btn-primary btn-black save-btn scaled">Сохранить</button>
+							<button class="btn btn-primary btn-black save-btn scaled" type="submit"
+							        value="Update">Сохранить
+							</button>
 						</div>
 					</div>
 				</form>

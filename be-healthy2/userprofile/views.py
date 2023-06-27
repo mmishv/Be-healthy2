@@ -1,17 +1,35 @@
 from django.contrib.auth import login, authenticate, logout
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views.generic import UpdateView
 
 from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm, MainInfoProfileForm
 from userprofile.models import Profile
 
 
+@login_required
 def get_about_me(request):
     user = request.user
     profile = Profile.objects.get(user=user)
     return render(request, 'userprofile/general/about_me.html', {'profile': profile,
                                                                  'form': AboutMeProfileForm(),
                                                                  'modal_form': MainInfoProfileForm()})
+
+
+class ProfileAboutMeUpdateView(UpdateView):
+    model = Profile
+    form_class = AboutMeProfileForm
+    success_url = '/profile'
+    template_name = 'userprofile/auth.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
+    def form_valid(self, form):
+        profile = form.save(commit=False)
+        profile.save()
+        return super().form_valid(form)
 
 
 class RegisterView(View):
