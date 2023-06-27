@@ -1,243 +1,208 @@
 {% extends 'main/header.html' %}
+{% load crispy_forms_filters %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %}{{ article.title }}{% endblock %}
 {% block head %}
 	<link rel="stylesheet" href="../../../static/userprofile/css/about_me.css">
 {% endblock %}
 {% block content %}
-<div class="background">
-    <div class="background-cover"></div>
-</div>
-<div class="wrapper row">
-    {% include 'userprofile/general/profile_navbar.html' %}
-    <div class="col-sm-10">
-        <div class="exit-buttons">
-            <button class="btn btn-primary back-btn">
-                <a href="logout">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
-                        <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-                    </svg> Выйти</a>
-            </button>
-	        {% if profile.role == "A" %}
-		        <button type="button" class="btn btn-primary admin-btn scaled">
-			        <a href="admin">
-				        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-				             class="bi bi-person-gear" viewBox="0 0 16 16">
-					        <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382l.045-.148ZM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"/>
-				        </svg>
-			        </a>
-		        </button>
-	        {% endif %}
-        </div>
-        <div class="inf">
-            <form method="post" action="edit_profile">
-                <div class="row general-inf">
-	                {% if profile.avatar %}
-		                 <img src="data:image/jpeg;base64,${profile.getBase64image()}" class="photo">
-	                {% else %}
-		                <img src="../../../../main/static/assets/profile.png" class="photo">
-	                {% endif %}
-                    <div class="col-sm-7"
-                         style="display: inline-flex; justify-content: space-between; padding-right: 0">
-                        <h2>
-	                        {% if profile.user.first_name %}
-	                        {{ profile.user.first_name }}
-	                        {% else %}
-	                        Новый пользователь
-	                        {% endif %}
-                        </h2>
-                        <button type="button" class="btn btn-primary edit-btn scaled" data-toggle="modal"
-                                data-target="#editModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-pencil" viewBox="0 0 16 16">
-                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <fieldset class="form-group">
-                    <div class="row">
-	                    <legend class="col-form-label col-sm-5 pt-0">Пол:</legend>
-	                    <div class="col-sm-7">
-		                    {% for radio in form.sex %}
-			                    <div class="form-check form-check-inline">
-				                    <input name="sex" class="form-check-input large" type="radio"
-				                           id="{{ radio.id_for_label }}"
-				                           value="{{ radio.choice_value }}"
-				                           {% if radio.choice_value == profile.getSex %}checked{% endif %}>
-				                    <label class="form-check-label" for="{{ radio.id_for_label }}">
-					                    {{ radio.choice_label }}
-				                    </label>
-			                    </div>
-		                    {% endfor %}
-	                    </div>
-                    </div>
-                </fieldset>
-                <div class="form-group row">
-                    <label for="height" class="col-sm-5 col-form-label">Рост:</label>
-                    <div class="col-sm-7">
-                        <input name="height" class="form-control" id="height" placeholder="Рост, см" type="number"
-                        {% if profile.height %} value="{{ profile.height }}" {% endif %} >
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="weight" class="col-sm-5 col-form-label">Вес:</label>
-                    <div class="col-sm-7">
-                        <input name="weight" class="form-control" step="any"
-                               id="weight" placeholder="Вес" type="number"
-                        {% if profile.weight %} value="{{ profile.weight }}" {% endif %} >
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="age" class="col-sm-5 col-form-label">Возраст:</label>
-	                <div class="col-sm-7">
-		                <input name="age" class="form-control" id="age" placeholder="Возраст" type="number"
-				                {% if profile.age %} value="{{ profile.age }}" {% endif %} >
-	                </div>
-                </div>
-	            <div class="form-group row">
-		            <label for="goal" class="col-sm-5 col-form-label">Цель:</label>
-		            <select name="goal" class="form-control" id="goal">
-			            {% for option in form.goal %}
-				            <option value="{{ option }}" {% if profile.goal == option.label %} selected {% endif %}>
-					            {{ option.label }}
-				            </option>
-			            {% endfor %}
-		            </select>
-	            </div>
-	            <div class="form-group row">
-		            <label for="goal" class="col-sm-5 col-form-label">Физическая активность:</label>
-		            <select name="goal" class="form-control" id="goal">
-			            {% for option in form.activity %}
-				            <option value="{{ option }}" {% if profile.goal == option %} selected {% endif %}>
-				            </option>
-			            {% endfor %}
-		            </select>
-	            </div>
-	            {#<div class="form-group row">#}
-		        {#    <label for="aim" class="col-sm-5 col-form-label">Цель</label>#}
-		        {#    <select name="aim" id="aim" class="form-control">#}
-			    {#        <option value="1"#}
-			    {#        <c:if test="${profile.getGoal()==1}"> selected</c:if>#}
-			    {#        >Поддержание веса#}
-			    {#        </option>#}
-			    {#        <option value="1.2"#}
-			    {#        <c:if test="${profile.getGoal()==1.2}"> selected</c:if>#}
-			    {#        >Набор веса</option>#}
-			    {#        <option value="0.8"#}
-			    {#        <c:if test="${profile.getGoal()==0.8}"> selected</c:if>#}
-			    {#        >Сброс веса</option>#}
-		        {#    </select>#}
-	            {#</div>#}
-{% comment %}
-                <div class="form-group row">
-                    <label for="activity" class="col-sm-5 col-form-label">Физическая активность</label>
-                    <select id="activity" class="form-control" name="activity">
-                        <option value="1" <c:if test="${profile.getActivity()==1}"> selected</c:if>>
-                            Без учета физ. нагрузки
-                        </option>
-                        <option value="1.2" <c:if test="${profile.getActivity()==1.2}"> selected</c:if>>
-                            Сидячий образ жизни
-                        </option>
-                        <option value="1.375" <c:if test="${profile.getActivity()==1.375}"> selected</c:if>>
-                            Легкая активность(1-2 раза в неделю)
-                        </option>
-                        <option value="1.55" <c:if test="${profile.getActivity()==1.55}"> selected</c:if>>
-                            Умеренная активность (3-5 раз в неделю)
-                        </option>
-                        <option value="1.725" <c:if test="${profile.getActivity()==1.725}"> selected</c:if>>
-                            Высокая активность (более 5 раз в неделю)
-                        </option>
-                        <option value="1.9" <c:if test="${profile.getActivity()==1.9}"> selected</c:if>>
-                            Очень высокая активность (профессиональный спорт)
-                        </option>
-                    </select>
-                </div>
+	<div class="background">
+		<div class="background-cover"></div>
+	</div>
+	<div class="wrapper row">
+		{% include 'userprofile/general/profile_navbar.html' %}
+		<div class="col-sm-10">
+			<div class="exit-buttons">
+				<button class="btn btn-primary back-btn">
+					<a href="logout">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+						     class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+							<path fill-rule="evenodd"
+							      d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"></path>
+							<path fill-rule="evenodd"
+							      d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"></path>
+						</svg>
+						Выйти</a>
+				</button>
+				{% if profile.role == "A" %}
+					<button type="button" class="btn btn-primary admin-btn scaled">
+						<a href="admin">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+							     class="bi bi-person-gear" viewBox="0 0 16 16">
+								<path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382l.045-.148ZM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"/>
+							</svg>
+						</a>
+					</button>
+				{% endif %}
+			</div>
+			<div class="inf">
+				<form method="post" action="edit_profile">
+					{% csrf_token %}
+					<div class="row general-inf">
+						{% if profile.avatar %}
+							<img src="data:image/jpeg;base64,${profile.getBase64image()}" class="photo">
+						{% else %}
+							<img src="../../../../main/static/assets/profile.png" class="photo">
+						{% endif %}
+						<div class="col-sm-7"
+						     style="display: inline-flex; justify-content: space-between; padding-right: 0">
+							<h2>
+								{% if profile.user.first_name %}
+									{{ profile.user.first_name }}
+								{% else %}
+									Новый пользователь
+								{% endif %}
+							</h2>
+							<button type="button" class="btn btn-primary edit-btn scaled" data-toggle="modal"
+							        data-target="#editModal">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+								     class="bi bi-pencil" viewBox="0 0 16 16">
+									<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+								</svg>
+							</button>
+						</div>
+					</div>
+					<fieldset class="form-group">
+						<div class="row">
+							<legend class="col-form-label col-sm-5 pt-0">Пол:</legend>
+							<div class="col-sm-7">
+								{% for radio in form.sex %}
+									<div class="form-check form-check-inline">
+										<input name="sex" class="form-check-input large" type="radio"
+										       id="{{ radio.id_for_label }}"
+										       value="{{ radio.choice_value }}"
+										       {% if radio.choice_label == profile.get_sex_display %}checked{% endif %}>
+										<label class="form-check-label" for="{{ radio.id_for_label }}">
+											{{ radio.choice_label }}
+										</label>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</fieldset>
+					<div class="form-group row">
+						<label for="height" class="col-sm-5 col-form-label">Рост:</label>
+						<div class="col-sm-7">
+							<input name="height" class="form-control" id="height" placeholder="Рост, см" type="number"
+									{% if profile.height %} value="{{ profile.height }}" {% endif %} >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="weight" class="col-sm-5 col-form-label">Вес:</label>
+						<div class="col-sm-7">
+							<input name="weight" class="form-control" step="any"
+							       id="weight" placeholder="Вес" type="number"
+									{% if profile.weight %} value="{{ profile.weight }}" {% endif %} >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="age" class="col-sm-5 col-form-label">Возраст:</label>
+						<div class="col-sm-7">
+							<input name="age" class="form-control" id="age" placeholder="Возраст" type="number"
+									{% if profile.age %} value="{{ profile.age }}" {% endif %} >
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="goal" class="col-sm-5 col-form-label">Цель:</label>
+						<select name="goal" class="form-control" id="goal">
+							{% for value, label in form.goal.field.choices %}
+								<option value="{{ value }}" {% if profile.goal|floatformat == value|floatformat %}
+								        selected {% endif %}>
+									{{ label }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="form-group row">
+						<label for="activity" class="col-sm-5 col-form-label">Физическая активность:</label>
+						<select name="goal" class="form-control" id="activity">
+							{% for value, label in form.activity.field.choices %}
+								<option value="{{ value }}" {% if profile.activity|floatformat == value|floatformat %}
+								        selected {% endif %}>
+									{{ label }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="form-group row">
+						<h5 class="col-sm-12">Задать ограничения на суточную норму</h5>
+						<label for="k" class="col-sm-3 col-form-label center">Калории, г</label>
+						<label for="b" class="col-sm-3 col-form-label center">Белки, г</label>
+						<label for="j" class="col-sm-3 col-form-label center">Жиры, г</label>
+						<label for="u" class="col-sm-3 col-form-label center">Углеводы, г</label>
+						<div class="col-sm-3">
+							<input name="k" class="form-control" id="k" type="number" step="any"
+							       placeholder="{{ profile.calories_recommendation }}" value="{{ profile.calories }}">
+						</div>
+						<div class="col-sm-3">
+							<input name="b" class="form-control" id="b" type="number" step="any"
+							       placeholder="{{ profile.proteins_recommendation }}" value="{{ profile.proteins }}">
+						</div>
 
-                <div class="form-group row">
-                    <label for="aim" class="col-sm-5 col-form-label">Цель</label>
-                    <select name="aim" id="aim" class="form-control">
-                        <option value="1" <c:if test="${profile.getGoal()==1}"> selected</c:if>>Поддержание веса
-                        </option>
-                        <option value="1.2"<c:if test="${profile.getGoal()==1.2}"> selected</c:if>>Набор веса</option>
-                        <option value="0.8" <c:if test="${profile.getGoal()==0.8}"> selected</c:if>>Сброс веса</option>
-                    </select>
-                </div>
-{% endcomment %}
-                <c:set var="kbju" scope="session" value="${profile.getKBJU_norm()}"/>
-                <div class="form-group row">
-                    <h5 class="col-sm-12">Задать ограничения на суточную норму</h5>
-                    <label for="k" class="col-sm-3 col-form-label center">Калории, г</label>
-                    <label for="b" class="col-sm-3 col-form-label center">Белки, г</label>
-                    <label for="j" class="col-sm-3 col-form-label center">Жиры, г</label>
-                    <label for="u" class="col-sm-3 col-form-label center">Углеводы, г</label>
-                    <div class="col-sm-3">
-                        <input name="k" class="form-control" id="k" type="number" step="any"
-                               placeholder="${profile.getCalorieRec()}" value="${kbju.get('k')}">
-                    </div>
-                    <div class="col-sm-3">
-                        <input name="b" class="form-control" id="b" type="number" step="any"
-                               placeholder="${profile.getProteinRec()}" value="${kbju.get('b')}">
-                    </div>
+						<div class="col-sm-3">
+							<input name="j" class="form-control" id="j" type="number" step="any"
+							       placeholder="{{ profile.fats_recommendation }}" value="{{ profile.fats }}">
+						</div>
 
-                    <div class="col-sm-3">
-                        <input name="j" class="form-control" id="j" type="number" step="any"
-                               placeholder="${profile.getFatRec()}" value="${kbju.get('j')}">
-                    </div>
+						<div class="col-sm-3">
+							<input name="u" class="form-control" id="u" type="number" step="any"
+							       placeholder="{{ profile.carbohydrates_recommendation }}"
+							       value="{{ profile.carbohydrates }}">
+						</div>
+					</div>
+					<h6 class="col-sm-12">
+						{% if profile.calories_recommendation != 0 %}
+							* рекомедуется: {{ profile.calories_recommendation }} ккал,
+							{{ profile.proteins_recommendation }}/{{ profile.fats_recommendation }}/
+							{{ profile.carbohydrates_recommendation }}
+						{% else %}
+							* пожалуйста, введите информацию о своем росте, возрасте и весе, чтобы мы могли дать Вам
+							рекомендации
+						{% endif %}
+					</h6>
+					<div class="form-group row" style="justify-content: end;">
+						<div class="col-sm-5">
+							<button class="btn btn-primary btn-black save-btn scaled">Сохранить</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-                    <div class="col-sm-3">
-                        <input name="u" class="form-control" id="u" type="number" step="any"
-                               placeholder="${profile.getCarbRec()}" value="${kbju.get('u')}">
-                    </div>
-                </div>
-                <h6 class="col-sm-12">
-                    <c:if test="${profile.getProteinRec() != 0}"> * рекомедуется: ${profile.getCalorieRec()} ккал,
-                        ${profile.getProteinRec()}/${profile.getFatRec()}/${profile.getCarbRec()}</c:if>
-                    <c:if test="${profile.getProteinRec() == 0}"> * пожалуйста, введите информацию о своем росте
-                        , возрасте и весе, чтобы мы могли дать Вам рекомендации</c:if>
-                </h6>
-                <div class="form-group row" style="justify-content: end;">
-                    <div class="col-sm-5">
-                        <button class="btn btn-primary btn-black save-btn scaled">Сохранить</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-</div>
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <fmt:requestEncoding value="UTF-8"/>
-            <form method="post" action="profile" enctype="multipart/form-data" accept-charset="utf-8">
-                <div class="modal-header">
-                    <h4 class="modal-title">Редактировать</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body cur-products" id="cur-products">
-                    <div class="form-group row">
-                        <label for="user-photo" class="col-sm-5 bold">Загрузить фото</label>
-                        <div class="col-sm-7">
-                            <input type="file" class="form-control-file" id="user-photo" name="avatar"
-                                   accept="image/png, image/jpeg">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="user-name" class="col-sm-5 col-form-label">Новое имя: </label>
-                        <div class="col-sm-7">
-                            <input name="name" class="form-control" id="user-name" value="${profile.getName()}">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-black btn-primary">Сохранить</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+	</div>
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	     aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<form method="post" action="" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="modal-header">
+						<h4 class="modal-title">Редактировать</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group row">
+							<label for="user-photo" class="col-sm-5 bold">Загрузить фото</label>
+							<div class="col-sm-7">
+								{{ modal_form.avatar }}
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="user-name" class="col-sm-5 col-form-label">Новое имя:</label>
+							<div class="col-sm-7">
+								<input name="name" class="form-control" id="user-name"
+								       value="{{ profile.user.first_name }}">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-black btn-primary">Сохранить</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}
