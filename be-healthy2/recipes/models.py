@@ -45,7 +45,7 @@ class Product(models.Model):
 class Recipe(models.Model):
     title = models.CharField('Название', max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes', verbose_name='Автор рецепта')
-    image = models.ImageField('Изображение', upload_to='')
+    image = models.ImageField('Изображение', upload_to='images/recipes')
     cooking_time = models.IntegerField('Время приготовления в минутах')
     ingredients = models.ManyToManyField(Product, through='Ingredient', related_name='recipes')
     categories = models.ManyToManyField(RecipeCategory, verbose_name='Категории', related_name='recipes')

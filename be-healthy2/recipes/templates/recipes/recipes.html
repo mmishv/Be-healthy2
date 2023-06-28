@@ -12,66 +12,43 @@
     <div class="categories col-sm-2">
         <ul class="list-group">
 	        {% for cat in categories %}
-                <li class="list-group-item"><a href=""
-                                               style="color: white !important; text-decoration: none !important;"> {{ cat.name }}</a>
+                <li class="list-group-item"><a href="" style="color: white !important; text-decoration: none !important;"> {{ cat.name }}</a>
                 </li>
 	        {% endfor %}
         </ul>
     </div>
     <div class="col-sm-10">
         <button type="button scaled" class="btn add-button">
-            <a href="/create_recipe">Добавить рецепт</a></button>
-        <nav>
-            <ul class="pagination">
-                <c:if test="${cur_page>1}">
-                    <li class="page-item">
-                        <a class="page-link" href="${cat_id}${cur_page-1}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                </c:if>
-                <c:forEach begin="1" end="${page_cnt}" varStatus="i">
-                    <li class="page-item"><a class="page-link" href="${cat_id}${i.count}"> ${i.count} </a></li>
-                </c:forEach>
-                <c:if test="${cur_page<page_cnt}">
-                    <li class="page-item">
-                        <a class="page-link" href="${cat_id}${cur_page+1}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </c:if>
-            </ul>
-        </nav>
+            <a href="">Добавить рецепт</a></button>
+{% include 'main/pagination.html' %}
         <div class="recipe-wrapper">
-            <c:forEach items="${recipes}" var="recipe" varStatus="loop">
+	        {% for recipe in page %}
                 <div class="card">
-                    <img src="data:image/jpeg;base64,${recipe.getBase64image()}" class="card-img-top">
+                    <img src="{{ recipe.image.url }}" class="card-img-top">
                     <div class="card-body">
-                        <h5 class="card-title">${recipe.title}
+                        <h5 class="card-title">{{ recipe.title }}
                         </h5>
-                        <h6 class="card-title">${authors[loop.index]}</h6>
-                        <h6 class="card-title">${recipe.cookingTime} минут</h6>
+                        <h6 class="card-title">{{ recipe.author.username }}</h6>
+                        <h6 class="card-title">{{ recipe.cooking_time}} минут</h6>
                     </div>
                     <div class="card-body">
                         <button type="button" class="btn btn-primary scaled" data-toggle="modal"
-                                data-target="#${recipe.id}">
+                                data-target="#{{ recipe.id }}">
                             Посмотреть рецепт
                         </button>
                     </div>
-                    <div class="modal fade" id="${recipe.id}" tabindex="-1" role="dialog"
-                         aria-labelledby="${recipe.id}" aria-hidden="true">
+                    <div class="modal fade" id="{{ recipe.id }}" tabindex="-1" role="dialog"
+                         aria-labelledby="{{ recipe.id }}" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title" id="${recipe.id}">${recipe.title}</h4>
+                                    <h4 class="modal-title" id="${recipe.id}">{{ recipe.title }}</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <img src="data:image/jpeg;base64,${recipe.getBase64image()}" class="modal-img">
+                                    <img src="{{ recipe.image.url }}" class="modal-img">
                                     <div class="general-info">
                                         <table class="table">
                                             <thead>
@@ -84,7 +61,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td>${recipe.getKBJU()['k']}
+                                                <td>{{ recipe.id }}
                                                 </td>
                                                 <td>${recipe.getKBJU()['b']}
                                                 </td>
@@ -144,7 +121,7 @@
                         </div>
                     </div>
                 </div>
-            </c:forEach>
+           {% endfor %}
         </div>
     </div>
 </div>
