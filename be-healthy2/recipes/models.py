@@ -64,6 +64,21 @@ class Recipe(models.Model):
         verbose_name = 'рецепт'
         verbose_name_plural = 'рецепты'
 
+    @property
+    def kbju_per_100_grams(self):
+        kbju = {'k': 0, 'b': 0, 'j': 0, 'u': 0}
+        quantity = 0
+        for ingredient in self.ingredients.through.objects.filter(recipe=self):
+            quantity += ingredient.quantity
+            kbju['k'] = kbju['k'] + ingredient.quantity * float(ingredient.product.calories)
+            kbju['b'] = kbju['b'] + ingredient.quantity * float(ingredient.product.proteins)
+            kbju['j'] = kbju['j'] + ingredient.quantity * float(ingredient.product.fats)
+            kbju['u'] = kbju['u'] + ingredient.quantity * float(ingredient.product.carbohydrates)
+        if quantity:
+            for k, v in kbju.items():
+                kbju[k] = round(v / quantity, 1)
+        return kbju
+
 
 class Ingredient(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
