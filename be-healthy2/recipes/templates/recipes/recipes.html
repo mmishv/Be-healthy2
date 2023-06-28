@@ -6,118 +6,27 @@
 {% endblock %}
 {% block content %}
 	<div class="background">
-    <div class="background-cover"></div>
-</div>
-<div class="page-recipe">
-    <div class="categories col-sm-2">
-        <ul class="list-group">
-	        {% for cat in categories %}
-                <li class="list-group-item"><a href="" style="color: white !important; text-decoration: none !important;"> {{ cat.name }}</a>
-                </li>
-	        {% endfor %}
-        </ul>
-    </div>
-    <div class="col-sm-10">
-        <button type="button scaled" class="btn add-button">
-            <a href="">Добавить рецепт</a></button>
-{% include 'main/pagination.html' %}
-        <div class="recipe-wrapper">
-	        {% for recipe in page %}
-                <div class="card">
-                    <img src="{{ recipe.image.url }}" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ recipe.title }}
-                        </h5>
-                        <h6 class="card-title">{{ recipe.author.username }}</h6>
-                        <h6 class="card-title">{{ recipe.cooking_time}} минут</h6>
-                    </div>
-                    <div class="card-body">
-                        <button type="button" class="btn btn-primary scaled" data-toggle="modal"
-                                data-target="#{{ recipe.id }}">
-                            Посмотреть рецепт
-                        </button>
-                    </div>
-                    <div class="modal fade" id="{{ recipe.id }}" tabindex="-1" role="dialog"
-                         aria-labelledby="{{ recipe.id }}" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="${recipe.id}">{{ recipe.title }}</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="{{ recipe.image.url }}" class="modal-img">
-                                    <div class="general-info">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col" class="col-md-3">К</th>
-                                                <th scope="col" class="col-md-3">Б</th>
-                                                <th scope="col" class="col-md-3">Ж</th>
-                                                <th scope="col" class="col-md-3">У</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-											  {% for key, value in recipe.kbju_per_100_grams.items %}
-											    <td>{{ value }}</td>
-											  {% endfor %}
-	                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="author">Автор: {{ recipe.author.username}}
-                                        </div>
-                                        <div class="cooking-time">Время
-                                            приготовления: {{ recipe.cooking_time }} минут
-                                        </div>
-                                        <div class="recipe-category" style="display: inline">
-                                            Категории:
-                                        </div>
-                                    {% for cat in recipe.categories.all %}
-                                            <div class="category" style="display: inline">{{ cat.name|lower}}
-                                                    {% if forloop.counter != recipe.categories.count %}, {% endif %}</div>
-	                                    {% endfor %}
-                                    </div>
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col" class="col-md-7">Ингредиент</th>
-                                            <th scope="col" class="col-md-2">Количество</th>
-                                            <th scope="col" class="col-md-3">Мера измерения</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for i in recipe.ingredient_amount.all %}
-                                            <tr>
-                                                <th scope="row">{{forloop.count}}
-                                                </th>
-                                                <td>{{ i.product.name }}
-                                                </td>
-                                                <td style="text-align: center;">{{ i.quantity }}
-                                                </td>
-                                                <td style="text-align: center;">{{ i.unit }}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                    <h5 style="text-align: center; margin-top: 3%">Рецепт</h5>
-                                    <div id="recipe-text${recipe.id}" class="recipe-text">
-                                            {{ recipe.text }}<br>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Закрыть</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-           {% endfor %}
-        </div>
-    </div>
-</div>
+		<div class="background-cover"></div>
+	</div>
+	<div class="page-recipe">
+		<div class="categories col-sm-2">
+			<ul class="list-group">
+				{% for cat in categories %}
+					<li class="list-group-item"><a href=""
+					                               style="color: white !important; text-decoration: none !important;"> {{ cat.name }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="col-sm-10">
+			<button type="button" class="btn add-button">
+				<a href="">Добавить рецепт</a></button>
+			{% include 'main/pagination.html' %}
+			<div class="recipe-wrapper">
+				{% for recipe in page %}
+					{% include 'recipes/recipe_card.html' %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 {% endblock %}
