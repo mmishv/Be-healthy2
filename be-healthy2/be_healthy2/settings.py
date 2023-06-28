@@ -141,3 +141,18 @@ AUTH_PROFILE_MODULE = 'userprofile.Profile'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+PATCH_SLUGIFY = True
+
+AUTOSLUG_SETTINGS = {
+    'default': {
+        'slugify': 'autoslug.utils.slugify',
+        'slugify_kwargs': {
+            'separator': '-',
+            'capitalize': False,
+            'max_length': 50,
+            'allow_unicode': True,
+        },
+        'field_class': 'autoslug.fields.UslugUnicodeAutoSlugField',
+    },
+}
