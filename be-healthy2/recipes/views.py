@@ -10,7 +10,7 @@ def index(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'recipes/recipes.html', {
-        'categories': RecipeCategory,
+        'categories': RecipeCategory.objects.all(),
         'page': page,
     })
 

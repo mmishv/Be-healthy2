@@ -11,11 +11,11 @@
 <div class="page-recipe">
     <div class="categories col-sm-2">
         <ul class="list-group">
-            <c:forEach items="${categories}" var="cat">
-                <li class="list-group-item"><a href="/recipe_category/${cat.id}-1"
-                                               style="color: white !important; text-decoration: none !important;"> ${cat.name}</a>
+	        {% for cat in categories %}
+                <li class="list-group-item"><a href=""
+                                               style="color: white !important; text-decoration: none !important;"> {{ cat.name }}</a>
                 </li>
-            </c:forEach>
+	        {% endfor %}
         </ul>
     </div>
     <div class="col-sm-10">
