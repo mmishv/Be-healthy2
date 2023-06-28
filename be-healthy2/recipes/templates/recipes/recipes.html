@@ -61,29 +61,24 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td>{{ recipe.id }}
-                                                </td>
-                                                <td>${recipe.getKBJU()['b']}
-                                                </td>
-                                                <td>${recipe.getKBJU()['j']}
-                                                </td>
-                                                <td>${recipe.getKBJU()['u']}
-                                                </td>
-                                            </tr>
+											  {% for key, value in recipe.kbju_per_100_grams.items %}
+											    <td>{{ value }}</td>
+											  {% endfor %}
+	                                            </tr>
                                             </tbody>
                                         </table>
-                                        <div class="author${recipe.id}">Автор: ${authors[loop.index]}
+                                        <div class="author">Автор: {{ recipe.author.username}}
                                         </div>
-                                        <div class="cooking-time${recipe.id}">Время
-                                            приготовления: ${recipe.cookingTime} минут
+                                        <div class="cooking-time">Время
+                                            приготовления: {{ recipe.cooking_time }} минут
                                         </div>
-                                        <div class="recipe-category${recipe.id}" style="display: inline">
+                                        <div class="recipe-category" style="display: inline">
                                             Категории:
                                         </div>
-                                        <c:forEach items="${recipe.categories}" var="cat" varStatus="loop1">
-                                            <div class="category" style="display: inline">${cat.name.toLowerCase()}<c:if
-                                                    test="${loop1.count!=fn:length(recipe.categories)}">, </c:if></div>
-                                        </c:forEach>
+                                    {% for cat in recipe.categories.all %}
+                                            <div class="category" style="display: inline">{{ cat.name|lower}}
+                                                    {% if forloop.counter != recipe.categories.count %}, {% endif %}</div>
+	                                    {% endfor %}
                                     </div>
                                     <table class="table">
                                         <thead>
@@ -95,23 +90,23 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${recipe.ingredients}" var="i" varStatus="loop2">
+                                        {% for i in recipe.ingredient_amount.all %}
                                             <tr>
-                                                <th scope="row">${loop2.count}
+                                                <th scope="row">{{forloop.count}}
                                                 </th>
-                                                <td>${i.name}
+                                                <td>{{ i.product.name }}
                                                 </td>
-                                                <td style="text-align: center;">${i.quantity}
+                                                <td style="text-align: center;">{{ i.quantity }}
                                                 </td>
-                                                <td style="text-align: center;">${i.unit}
+                                                <td style="text-align: center;">{{ i.unit }}
                                                 </td>
                                             </tr>
-                                        </c:forEach>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
                                     <h5 style="text-align: center; margin-top: 3%">Рецепт</h5>
                                     <div id="recipe-text${recipe.id}" class="recipe-text">
-                                            ${recipe.text}<br>
+                                            {{ recipe.text }}<br>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
