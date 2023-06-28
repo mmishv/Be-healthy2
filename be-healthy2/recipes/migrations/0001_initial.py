@@ -69,9 +69,9 @@ class Migration(migrations.Migration):
                 ('date', models.DateTimeField(auto_now_add=True, verbose_name='Дата')),
                 ('slug', autoslug.fields.AutoSlugField(allow_unicode=True, editable=False, populate_from='title')),
                 ('moderated', models.BooleanField(default=False)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipes.css', to=settings.AUTH_USER_MODEL, verbose_name='Автор рецепта')),
-                ('categories', models.ManyToManyField(related_name='recipes.css', to='recipes.css.recipecategory', verbose_name='Категории')),
-                ('ingredients', models.ManyToManyField(related_name='recipes.css', to='recipes.css.ingredient')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipes', to=settings.AUTH_USER_MODEL, verbose_name='Автор рецепта')),
+                ('categories', models.ManyToManyField(related_name='recipes', to='recipes.recipecategory', verbose_name='Категории')),
+                ('ingredients', models.ManyToManyField(related_name='recipes', to='recipes.ingredient')),
             ],
             options={
                 'verbose_name': 'рецепт',
@@ -81,11 +81,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='ingredient',
             name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.css.product'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.product'),
         ),
         migrations.AddField(
             model_name='ingredient',
             name='recipe',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.css.recipe'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.recipe'),
         ),
     ]
