@@ -44,7 +44,6 @@ class Meal(models.Model):
         return kbju
 
 
-
 class MealProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='product_amount')

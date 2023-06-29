@@ -1,0 +1,43 @@
+{% block content %}
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+	     aria-labelledby="exampleModalCenterTitle"
+	     aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<form method="post" action="/diary/${date}" accept-charset="utf-8">
+					<div class="modal-header">
+						<input class="modal-title" id="exampleModalLongTitle" name="title"
+						       placeholder="Название приёма пищи"></input>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" id="products">
+						<div class="row prod-option" id="prod-option1">
+							<select id="product1" name="product1" class="form-control col-sm-6">
+								<c:forEach items="${products}" var="product">
+									<option value="${product.id}">
+										<c:out value="${product.name}"/>
+									</option>
+								</c:forEach>
+							</select>
+							<input id="quantity1" name="quantity1" type="number" class="form-control col-sm-2"
+							       placeholder="кол-во" required>
+							<select id="measure1" name="measure1" class="form-control col-sm-2">
+								<option selected>гр.</option>
+								<option>мл.</option>
+							</select>
+							<button class="col-sm-1 ing-button"
+							        onclick="addRow(this, 'products', 'prod-option', 'product')">
+								+
+							</button>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Добавить</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

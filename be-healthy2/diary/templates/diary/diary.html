@@ -14,99 +14,30 @@
         <div id="date">
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#ffffff9e"
                  class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                <path onclick="prevDay()"
+                <path onclick="prevDay('{{date}}')"
                       d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
             </svg>
             <input type="text" id="airdatepicker" class="form-control">
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#ffffff9e"
                  class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                <path onclick="nextDay()"
+                <path onclick="nextDay('{{date}}')"
                       d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path>
             </svg>
         </div>
-        <div class="meals-wrapper">
-	        {% for meal in meals %}
-			{% include 'diary/meal_card.html' %}
-                <div class="modal fade" id="editMeal{{ meal.id }}" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalCenterTitle"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <form method="post" action="" accept-charset="utf-8">
-                                <div class="modal-header">
-                                    <input class="modal-title" name="title" placeholder="Название приёма пищи"
-                                           value="{{ meal.name}}">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body" id="cur-products_additional${meal.id}">
-	                                {% for product in meal.product_amount.all %}
-                                        <div class="row cur-prod-option{{ meal.id }}-cur-prod-option"
-                                             id="cur-prod-option{{ meal.id }}-{{ forloop.counter }}">
-                                            <select name="add_product{{ meal.id }}_${loop.count}"
-                                                    id="add_product{{ meal.id }}_${loop.count}"
-                                                    class="form-control col-sm-6">
-                                                <c:forEach items="${products}" var="product">
-                                                    <c:if test="${product.id == meal.products[loop.index].id}">
-                                                        <option value="${product.id}" selected><c:out
-                                                                value="${product.name}"/></option>
-                                                    </c:if>
-                                                    <c:if test="${product.id != meal.products[loop.index].id}">
-                                                        <option value="${product.id}"><c:out
-                                                                value="${product.name}"/></option>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </select>
-                                            <input name="add_quantity{{ meal.id }}_${loop.count}"
-                                                   value="${meal.products[loop.index].quantity}"
-                                                   id="add_quantity{{ meal.id }}_${loop.count}"
-                                                   type="number" class="form-control col-sm-2" placeholder="кол-во"
-                                                   required>
-                                            <select name="add_measure{{ meal.id }}_${loop.count}"
-                                                    id="add_measure{{ meal.id }}_${loop.count}"
-                                                    class="form-control col-sm-2">
-                                                <option selected>гр.</option>
-                                                <option>мл.</option>
-                                            </select>
-                                            <c:if test="${loop.count != meal.products.size()}">
-                                                <button class="col-sm-1 ing-button disabled"
-                                                        style="background-color: rgba(17, 70, 48, 0.66);"
-                                                        onclick="addRow(this, 'cur-products_additional${meal.id}',
-                                                                'cur-prod-option${meal.id}-',
-                                                                'add_product${meal.id}_', 'add_', '${meal.id}_')">
-                                                    -
-                                                </button>
-                                            </c:if>
-                                            <c:if test="${loop.count == meal.products.size()}">
-                                                <button class="col-sm-1 ing-button"
-                                                        onclick="addRow(this, 'cur-products_additional${meal.id}',
-                                                                'cur-prod-option${meal.id}-', 'add_product${meal.id}_',
-                                                                'add_', '${meal.id}_')">
-                                                    +
-                                                </button>
-                                            </c:if>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-           {% endfor %}
-        </div>
+	    <div class="meals-wrapper">
+		    {% for meal in meals %}
+			    {% include 'diary/meal_card.html' %}
+			    {% include 'diary/edit_meal_modal.html' %}
+		    {% endfor %}
+	    </div>
     </div>
 
     <div class="col-sm-3">
-        <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary add-button scaled" data-toggle="modal"
                 data-target="#exampleModalCenter">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                  class="bi bi-plus-square-fill" viewBox="0 0 16 16" onClick="">
-                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
+                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
             </svg>
             Добавить приём пищи
         </button>
@@ -116,7 +47,7 @@
             <div class="total-progress">
                 <div class="progress-descr">
                     <div>Калории</div>
-                    <div>${k}/${k_norm} гр.</div>
+                    <div>{{ total.k }}/{{ profile.calories }}</div>
                 </div>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped" role="progressbar"
@@ -127,7 +58,7 @@
             <div class="total-progress">
                 <div class="progress-descr">
                     <div>Белки</div>
-                    <div> ${b}/${b_norm} гр.</div>
+                    <div>{{ total.b }}/{{ profile.proteins }} гр.</div>
                 </div>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped" role="progressbar"
@@ -138,7 +69,7 @@
             <div class="total-progress">
                 <div class="progress-descr">
                     <div>Жиры</div>
-                    <div>${j}/${j_norm} гр.</div>
+                    <div>{{ total.j }}/{{ profile.fats }} гр.</div>
                 </div>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped" role="progressbar"
@@ -149,7 +80,7 @@
             <div class="total-progress">
                 <div class="progress-descr">
                     <div>Углеводы</div>
-                    <div> ${u}/${u_norm} гр.</div>
+                    <div> {{ total.u }}/{{ profile.carbohydrates }} гр.</div>
                 </div>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped" role="progressbar"
@@ -160,90 +91,26 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form method="post" action="/diary/${date}" accept-charset="utf-8">
-                <div class="modal-header">
-                    <input class="modal-title" id="exampleModalLongTitle" name="title"
-                           placeholder="Название приёма пищи"></input>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="products">
-                    <div class="row prod-option" id="prod-option1">
-                        <select id="product1" name="product1" class="form-control col-sm-6">
-                            <c:forEach items="${products}" var="product">
-                                <option value="${product.id}"><c:out value="${product.name}"/></option>
-                            </c:forEach>
-                        </select>
-                        <input id="quantity1" name="quantity1" type="number" class="form-control col-sm-2"
-                               placeholder="кол-во" required>
-                        <select id="measure1" name="measure1" class="form-control col-sm-2">
-                            <option selected>гр.</option>
-                            <option>мл.</option>
-                        </select>
-                        <button class="col-sm-1 ing-button"
-                                onclick="addRow(this, 'products', 'prod-option', 'product')">
-                            +
-                        </button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Добавить</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<script src="../../static/diary/js/air-datepicker.js"></script>
-<script src="../../../recipes/static/recipes/js/addRow.js"></script>
-<script src="../../static/diary/js/updateProgress.js"></script>
-<script>
-    new AirDatepicker('#airdatepicker', {
-        selectedDates: [Date.parse('${date}')],
-        autoClose: true,
-        position: 'bottom center',
-        onSelect: function (date) {
-            var d = date.date;
-            location.href = '/diary/' + parseDate(d);
-        },
-    });
-
-    function nextDay() {
-        var date = new Date('${date}');
-        date.setDate(date.getDate() + 1);
-        location.href = '/diary/' + parseDate(date);
-    }
-
-    function prevDay() {
-        var date = new Date('${date}');
-        date.setDate(date.getDate() - 1);
-        location.href = '/diary/' + parseDate(date);
-    }
-
-    function parseDate(d) {
-        var year = d.getFullYear();
-        var month = d.getMonth() + 1;
-        var dt = d.getDate();
-        if (dt < 10) {
-            dt = '0' + dt;
-        }
-        if (month < 10) {
-            month = '0' + month;
-        }
-        return year + '-' + month + '-' + dt;
-    }
-
-    window.addEventListener('load', () => {
-        updateProgressCalories(${k}, ${k_norm});
-        updateProgressProteins(${b}, ${b_norm});
-        updateProgressFats(${j}, ${j_norm});
-        updateProgressCarbs(${u}, ${u_norm});
-    });
-</script>
+	{% include 'diary/new_meal_modal.html' %}
+	<script src="../../static/diary/js/air-datepicker.js"></script>
+	<script src="../../../recipes/static/recipes/js/addRow.js"></script>
+	<script src="../../static/diary/js/updateProgress.js"></script>
+	<script src="../../static/diary/js/calendarNavigation.js"></script>
+	<script>
+        new AirDatepicker('#airdatepicker', {
+            selectedDates: [Date.parse('{{date}}')],
+            autoClose: true,
+            position: 'bottom center',
+            onSelect: function (date) {
+                const d = date.date;
+                location.href = '/diary/' + parseDate(d);
+            },
+        });
+        window.addEventListener('load', () => {
+            updateProgressCalories({{total.k}}, {{profile.calories}});
+            updateProgressProteins({{total.b}}, {{profile.proteins}});
+            updateProgressFats({{total.j}}, {{profile.fats}});
+            updateProgressCarbs({{total.u}}, {{profile.carbohydrates}});
+        });
+	</script>
 {% endblock %}
