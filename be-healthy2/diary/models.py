@@ -1,3 +1,5 @@
+from datetime import datetime, time
+
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -23,12 +25,24 @@ class Meal(models.Model):
     def kbju_with_quantity(self):
         kbju = {'k': 0, 'b': 0, 'j': 0, 'u': 0, 'quantity': 0}
         for product in self.products.through.objects.filter(meal=self):
-            kbju['k'] = kbju['k'] + product.quantity * float(product.product.calories)
-            kbju['b'] = kbju['b'] + product.quantity * float(product.product.proteins)
-            kbju['j'] = kbju['j'] + product.quantity * float(product.product.fats)
-            kbju['u'] = kbju['u'] + product.quantity * float(product.product.carbohydrates)
+            kbju['k'] = kbju['k'] + product.quantity * float(product.product.calories) / 100
+            kbju['b'] = kbju['b'] + product.quantity * float(product.product.proteins) / 100
+            kbju['j'] = kbju['j'] + product.quantity * float(product.product.fats) / 100
+            kbju['u'] = kbju['u'] + product.quantity * float(product.product.carbohydrates) / 100
             kbju['quantity'] = kbju['quantity'] + product.quantity
         return kbju
+
+    @staticmethod
+    def get_daily_total(user, date):
+        start_time = datetime.combine(date, time.min)
+        end_time = datetime.combine(date, time.max)
+        meals = Meal.objects.filter(user=user, date__range=(start_time, end_time))
+        kbju = {'k': 0, 'b': 0, 'j': 0, 'u': 0, 'quantity': 0}
+        for meal in meals:
+            for k, v in meal.kbju_with_quantity.items():
+                kbju[k] += v
+        return kbju
+
 
 
 class MealProduct(models.Model):
