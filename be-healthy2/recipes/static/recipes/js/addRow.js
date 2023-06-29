@@ -1,31 +1,56 @@
-function addRow(e, parent, container, child, pref='', post='') {
-    if (e.classList.contains('disabled')) {
-        e.parentElement.remove();
-    } else {
-        let temp = e.parentElement.cloneNode(true);
-        e.classList.add('disabled');
-        e.style.backgroundColor = '#114630a8';
-        e.innerHTML = '-';
-        temp.children[1].value = '';
-        document.getElementById(parent).appendChild(temp);
-    }
-    let ingredients = document.getElementsByClassName(container);
-    let quantity = "quantity";
-    let measure = "measure";
-    if (parent === 'cur-products') {
-        quantity = "cur-quantity";
-        measure = "cur-measure";
-    }
-    for (let i = 0; i < ingredients.length; i++) {
-        const c = i + 1;
-        ingredients[i].id = container + c;
-        ingredients[i].name = container + c;
-        let ch = ingredients[i].children;
-        ch[0].id = child + c;
-        ch[1].id = pref+quantity+post + c;
-        ch[2].id = pref+measure+post + c;
-        ch[0].name = child + c;
-        ch[1].name = pref+quantity+post + c;
-        ch[2].name = pref+measure+post + c;
-    }
+function updateElementIndex(el, prefix, ndx) {
+    var id_regex = new RegExp('(' + prefix + '-\\d+)');
+    var replacement = prefix + '-' + ndx;
+    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+    if (el.id) el.id = el.id.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
 }
+function cloneMore(selector, prefix) {
+    var newElement = $(selector).clone(true);
+    var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+    newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
+        var name = $(this).attr('name')
+        if(name) {
+            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        }
+    });
+    newElement.find('label').each(function() {
+        var forValue = $(this).attr('for');
+        if (forValue) {
+          forValue = forValue.replace('-' + (total-1) + '-', '-' + total + '-');
+          $(this).attr({'for': forValue});
+        }
+    });
+    total++;
+    $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+    var conditionRow = $('.form-row:not(:last)');
+    conditionRow.find('.btn.add-form-row')
+    .removeClass('btn-primary').addClass('btn-secondary')
+    .removeClass('add-form-row').addClass('remove-form-row')
+    .html('-');
+    return false;
+}
+function deleteForm(prefix, btn) {
+        btn.closest('.form-row').remove();
+        var forms = $('.form-row');
+        $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+        for (var i=0, formCount=forms.length; i<formCount; i++) {
+            $(forms.get(i)).find(':input').each(function() {
+                updateElementIndex(this, prefix, i);
+            });
+        }
+    return false;
+}
+$(document).on('click', '.add-form-row', function(e){
+    e.preventDefault();
+    cloneMore('.form-row:last', 'ingredient_amount');
+    return false;
+});
+$(document).on('click', '.remove-form-row', function(e){
+    e.preventDefault();
+    deleteForm('ingredient_amount', $(this));
+    return false;
+});
