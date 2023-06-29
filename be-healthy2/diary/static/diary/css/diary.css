@@ -1,0 +1,230 @@
+.page {
+    display: flex;
+    height: 100%;
+}
+
+#date {
+    text-align-last: center;
+    margin: 4vh auto 0 auto;
+    display: flex;
+    align-items: center;
+    width: 280px;
+}
+
+/*meals*/
+.meals-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 1%;
+}
+
+.meal {
+    position: relative;
+    padding-bottom: 2.1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffffe3;
+    margin: 2%;
+    width: 45%;
+    min-width: 370px;
+    height: 16rem;
+    min-height: 200px;
+    border: solid 2px green;
+    border-radius: 7px;
+    overflow-y: auto;
+}
+
+.form-control {
+    width: 200px !important;
+    margin: 0 auto 0 auto;
+}
+
+.meal-name {
+    text-align: center;
+    border-bottom: solid 3px green;
+    padding: 2%;
+    font-weight: 500;
+    border-radius: 7px;
+    width: 100%;
+    background-color: #51d71957;
+    font-size: 1.1rem;
+}
+
+.product.row {
+    border-bottom: solid 1px #00800096;
+    line-height: 2.1rem;
+    margin: 0 !important;
+    padding: 0 2%;
+}
+
+.product.row .prod-bju, .product.row .prod-k, .product.row .prod-q {
+    align-self: center;
+    font-weight: 500;
+}
+
+.header.product.row {
+    color: #114630;
+    opacity: 0.8;
+}
+
+.prod-name {
+    width: 45%;
+    font-weight: 500;
+}
+
+.prod-bju {
+    width: 25%;
+    text-align: center;
+}
+
+.prod-k, .prod-q {
+    width: 15%;
+    text-align: center;
+}
+
+.meal-total {
+    background-color: #51d71957;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+/*buttons*/
+.btn {
+    background-color: #00000000;
+}
+
+.edit-button {
+    background-color: #114630 !important;
+    border: none !important;
+    width: fit-content;
+}
+
+.meal-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: absolute;
+    height: 2.5rem;
+}
+
+.meal-buttons button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    height: 2.5rem;
+}
+
+.meal-buttons button:focus, .meal-buttons button:focus-visible, .meal-buttons button:active,
+.modal-header .close:focus, .modal-header .close:focus-visible, .modal-header .close:active {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.meal-buttons svg {
+    vertical-align: middle;
+}
+
+.add-button {
+    margin: 4vh auto 0 auto;
+    display: block !important;
+    background-color: #114630 !important;
+    border: none !important;
+    width: 100% !important;
+    border: solid 2px white;
+    padding: .75rem !important;
+}
+
+/*scroll*/
+.scroll {
+    overflow: auto;
+}
+
+.scroll::-webkit-scrollbar {
+    width: 3px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    background: #9ec49e;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    background-color: #9ec49e;
+    border-radius: 40px;
+    border: 3px solid green;
+}
+
+/*modal*/
+.modal-dialog {
+    max-width: 550px !important;
+}
+
+.modal-title {
+    width: 100%;
+    line-height: 2.5 !important;
+    border: solid 2px green;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #51d71957;
+}
+
+.product-option {
+    justify-content: space-between !important;
+}
+
+.prod-option select, .prod-option input, .prod-option button,
+.cur-prod-option select, .cur-prod-option input, .cur-prod-option button {
+    margin: 0 auto !important;
+}
+
+.ing-button {
+    background-color: #114630;
+    color: white;
+    border-radius: 5px;
+}
+
+.modal-footer .btn.btn-primary {
+    background-color: #114630;
+    border: none;
+    padding: 1.5% 5% !important;
+}
+
+.modal-footer .btn.btn-primary:hover {
+    background-color: #114630 !important;
+}
+
+.modal-footer {
+    justify-content: center !important;
+}
+
+/*statistics*/
+.total {
+    background-color: #114630;
+    margin-top: 4vh;
+    padding: 5% 3%;
+    border-radius: 10px;
+}
+
+.total-name {
+    color: white;
+    text-align: center;
+    font-weight: 500;
+    font-size: larger;
+}
+
+.progress {
+    height: 2rem !important;
+    margin: 1% 0 5% 0;
+}
+
+.progress-descr {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+
+.row {
+    margin: 0 !important;
+}
