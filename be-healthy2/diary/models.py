@@ -22,7 +22,7 @@ class Meal(models.Model):
     @property
     def kbju_with_quantity(self):
         kbju = {'k': 0, 'b': 0, 'j': 0, 'u': 0, 'quantity': 0}
-        for product in self.products.through.objects.filter(recipe=self):
+        for product in self.products.through.objects.filter(meal=self):
             kbju['k'] = kbju['k'] + product.quantity * float(product.product.calories)
             kbju['b'] = kbju['b'] + product.quantity * float(product.product.proteins)
             kbju['j'] = kbju['j'] + product.quantity * float(product.product.fats)
@@ -50,3 +50,11 @@ class MealProduct(models.Model):
 
     def __str__(self):
         return f'{self.product.name}, {self.quantity} {self.unit}'
+
+    @property
+    def kbju(self):
+        kbju = {'k': round(self.quantity * float(self.product.calories) / 100, 1),
+                'b': round(self.quantity * float(self.product.proteins) / 100, 1),
+                'j': round(self.quantity * float(self.product.fats) / 100, 1),
+                'u': round(self.quantity * float(self.product.carbohydrates) / 100, 1)}
+        return kbju

@@ -25,87 +25,27 @@
             </svg>
         </div>
         <div class="meals-wrapper">
-            <c:forEach items="${meals}" var="meal">
-                <div class="meal scaled" id="meal${meal.id}">
-                    <c:if test="${not empty meal.name}">
-                        <div class="meal-name" id="meal-name1">${meal.name}</div>
-                    </c:if>
-                    <c:if test="${empty meal.name}">
-                        <div class="meal-name" id="meal-name1">Без названия</div>
-                    </c:if>
-                    <div class="row meal-buttons">
-                        <button type="button" class="btn" data-toggle="modal" data-target="#editMeal${meal.id}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-pencil" viewBox="0 0 16 16">
-                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                            </svg>
-                        </button>
-                        <div class="delete-meal">
-                            <form method="get" action="/delete-meal/${meal.id}_${date}">
-                                <button type="submit" class="btn"
-                                        name="delete" value="${meal.id}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="black"
-                                         class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="header product row">
-                        <div class="prod-name"></div>
-                        <div class="prod-q">Вес, г</div>
-                        <div class="prod-bju">Б/Ж/У</div>
-                        <div class="prod-k">ккал</div>
-                    </div>
-                    <div class="scroll">
-                        <c:forEach items="${meal.products}" var="p">
-                            <div class="product row">
-                                <div class="prod-name">${p.name}</div>
-                                <div class="prod-q">${p.quantity}</div>
-                                <div class="prod-bju">
-                                    <fmt:formatNumber value="${p.proteins * p.quantity / 100}"
-                                                      maxFractionDigits="1"/>/<fmt:formatNumber
-                                        value="${p.fats * p.quantity / 100}" maxFractionDigits="1"/>/<fmt:formatNumber
-                                        value="${p.carbohydrates * p.quantity / 100}" maxFractionDigits="1"/>
-                                </div>
-                                <div class="prod-k">
-                                    <fmt:formatNumber value="${p.calories * p.quantity / 100}" maxFractionDigits="1"/>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                    <div class="product row meal-total">
-                        <div class="prod-name">Итого</div>
-                        <div class="prod-q">${meal.KBJU.get("weight")}</div>
-                        <div class="prod-bju">
-                                ${meal.KBJU.get("b")}/${meal.KBJU.get("j")}/${meal.KBJU.get("u")}
-                        </div>
-                        <div class="prod-k">
-                                ${meal.KBJU.get("k")}
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="editMeal${meal.id}" tabindex="-1" role="dialog"
+	        {% for meal in meals %}
+			{% include 'diary/meal_card.html' %}
+                <div class="modal fade" id="editMeal{{ meal.id }}" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalCenterTitle"
                      aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
-                            <form method="post" action="/edit-meal/${meal.id}_${date}" accept-charset="utf-8">
+                            <form method="post" action="" accept-charset="utf-8">
                                 <div class="modal-header">
                                     <input class="modal-title" name="title" placeholder="Название приёма пищи"
-                                           value="${meal.name}">
+                                           value="{{ meal.name}}">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body" id="cur-products_additional${meal.id}">
-                                    <c:forEach items="${meal.products}" var="p" varStatus="loop">
-                                        <div class="row cur-prod-option${meal.id}- cur-prod-option"
-                                             id="cur-prod-option${meal.id}-${loop.count}">
-                                            <select name="add_product${meal.id}_${loop.count}"
-                                                    id="add_product${meal.id}_${loop.count}"
+	                                {% for product in meal.product_amount.all %}
+                                        <div class="row cur-prod-option{{ meal.id }}-cur-prod-option"
+                                             id="cur-prod-option{{ meal.id }}-{{ forloop.counter }}">
+                                            <select name="add_product{{ meal.id }}_${loop.count}"
+                                                    id="add_product{{ meal.id }}_${loop.count}"
                                                     class="form-control col-sm-6">
                                                 <c:forEach items="${products}" var="product">
                                                     <c:if test="${product.id == meal.products[loop.index].id}">
@@ -118,13 +58,13 @@
                                                     </c:if>
                                                 </c:forEach>
                                             </select>
-                                            <input name="add_quantity${meal.id}_${loop.count}"
+                                            <input name="add_quantity{{ meal.id }}_${loop.count}"
                                                    value="${meal.products[loop.index].quantity}"
-                                                   id="add_quantity${meal.id}_${loop.count}"
+                                                   id="add_quantity{{ meal.id }}_${loop.count}"
                                                    type="number" class="form-control col-sm-2" placeholder="кол-во"
                                                    required>
-                                            <select name="add_measure${meal.id}_${loop.count}"
-                                                    id="add_measure${meal.id}_${loop.count}"
+                                            <select name="add_measure{{ meal.id }}_${loop.count}"
+                                                    id="add_measure{{ meal.id }}_${loop.count}"
                                                     class="form-control col-sm-2">
                                                 <option selected>гр.</option>
                                                 <option>мл.</option>
@@ -147,7 +87,7 @@
                                                 </button>
                                             </c:if>
                                         </div>
-                                    </c:forEach>
+                                    {% endfor %}
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Сохранить</button>
@@ -156,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-            </c:forEach>
+           {% endfor %}
         </div>
     </div>
 
