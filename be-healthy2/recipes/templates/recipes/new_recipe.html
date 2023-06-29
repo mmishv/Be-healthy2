@@ -10,83 +10,63 @@
 		<fieldset class="form-group">
 			<div class="wrapper col-sm-9" style="margin: auto;">
 				<div class="form-group row">
-					<label for="recipe-title" class="col-sm-4 col-form-label">Название: </label>
+					<label for="{{ form.title.id_for_label }}" class="col-sm-4 col-form-label">Название: </label>
 					<div class="col-sm-8">
-						<input class="form-control" name="title" id="recipe-title" placeholder="Например, оладьи"
-						       required>
+						{{ form.title }}
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="cooking-time" class="col-sm-4 col-form-label">Время приготовления, мин: </label>
+					<label for="{{ form.cooking_time.id_for_label }}" class="col-sm-4 col-form-label">
+						Время приготовления, мин: </label>
 					<div class="col-sm-8">
-						<input type="number" class="form-control" id="cooking-time" name="cooking-time"
-						       placeholder="Например, 30"
-						       required>
+						{{ form.cooking_time }}
 					</div>
 				</div>
 				<div class="form-group row">
 					<div class="col-sm-4 bold">Категории:</div>
 					<div class="col-sm-8 row" style="margin: 0;">
-						<c:forEach items="${categories}" var="category">
-							<br/>
+						{% for category in form.categories %}
 							<div class="form-check col-sm-6">
-								<input class="form-check-input" type="checkbox" name="categories" value="${category.id}"
-								       id="${category.id}">
-								<label class="form-check-label" for="${category.id}">
-									<c:out value="${category.name}"/>
-								</label>
+								{{ category }}
 							</div>
-						</c:forEach>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="form-group row">
 					<div class="col-sm-4 bold">Ингредиенты:</div>
 					<div class="col-sm-8" id="ingredients-list">
-						<div class="row ing-option" id="ing-option1">
-							<select id="ingredient1" name="ingredient1" class="form-control col-sm-6" required>
-								<c:forEach items="${products}" var="product">
-									<option value="${product.id}">
-										<c:out value="${product.name}"/>
-									</option>
-								</c:forEach>
-							</select>
-							<input id="quantity1" name="quantity1" type="number" class="form-control col-sm-2"
-							       placeholder="кол-во" required>
-							<select id="measure1" name="measure1" class="form-control col-sm-2">
-								<option selected>г.</option>
-								<option>мл.</option>
-							</select>
-							<button class="col-sm-1 ing-button"
-							        onclick="addRow(this, 'ingredients-list', 'ing-option', 'ingredient')">
-								+
-							</button>
-						</div>
+						{{ formset.management_form }}
+						{% for form in formset %}
+							<div class="row form-row spacer ing-option">
+								{{ form.product }}
+								{{ form.quantity }}
+								{{ form.unit }}
+								<button class="btn btn-primary col-sm-1 ing-button add-form-row">
+									+
+								</button>
+							</div>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="recipe-photo" class="col-sm-4 bold">Фото рецепта:</label>
+					<label for="{{ form.image.id_for_label }}" class="col-sm-4 bold">Фото рецепта:</label>
 					<div class="col-sm-8">
-						<input type="file" name="image" class="form-control-file" id="recipe-photo" required
-						       accept="image/png, image/jpeg">
+						{{ form.image }}
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="recipe-description" class="col-sm-4 bold">Описание рецепта:</label>
-					<textarea class="form-control col-sm-8" name="text" id="recipe-description" rows="5"
-					          required></textarea>
+					<label for="{{ form.text.id_for_label }}" class="col-sm-4 bold">Описание рецепта:</label>
+					{{ form.text }}
 				</div>
 				<div class="form-group row">
 					<button type="submit" class="btn btn-primary"
 					        style="background-color:#114630 !important; border: #114630 !important;">
 						Добавить
 					</button>
-					<button onclick="history.back();" class="btn btn-primary back-btn">Вернуться к рецептам</button>
+					<button onclick="history.back();" class="btn back-btn">Вернуться к рецептам</button>
 				</div>
 			</div>
 		</fieldset>
 	</form>
-	{% block js %}
-		<script src="../../static/recipes/js/addRow.js"></script>
-		<script src="../../static/recipes/js/autoHeight.js"></script>
-	{% endblock %}
+	<script src="../../static/recipes/js/addRow.js"></script>
 {% endblock %}

@@ -21,7 +21,7 @@
 		<div class="col-sm-10">
 			{% if user.is_authenticated %}
 				<button type="button" class="btn add-button">
-					<a href="">Добавить рецепт</a></button>
+					<a href="{% url 'create_recipe' %}">Добавить рецепт</a></button>
 			{% endif %}
 			{% include 'main/pagination.html' %}
 			<div class="recipe-wrapper">
