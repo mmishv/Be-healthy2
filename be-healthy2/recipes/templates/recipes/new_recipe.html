@@ -7,6 +7,7 @@
 {% endblock %}
 {% block content %}
 	<form method="post" action="" enctype="multipart/form-data" accept-charset="utf-8">
+	 {% csrf_token %}
 		<fieldset class="form-group">
 			<div class="wrapper col-sm-9" style="margin: auto;">
 				<div class="form-group row">
