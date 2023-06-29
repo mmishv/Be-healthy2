@@ -4,7 +4,7 @@ from recipes.models import Recipe, Ingredient, Product, RecipeCategory
 
 
 @admin.register(Recipe)
-class ArticleCategoryAdmin(admin.ModelAdmin):
+class RecipeAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'date', 'moderated', )
 
 
