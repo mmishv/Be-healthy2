@@ -12,57 +12,20 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body" id="cur-products_additional${meal.id}">
-						{% for product in meal.product_amount.all %}
-							<div class="row cur-prod-option{{ meal.id }}-cur-prod-option"
-							     id="cur-prod-option{{ meal.id }}-{{ forloop.counter }}">
-								<select name="add_product{{ meal.id }}_${loop.count}"
-								        id="add_product{{ meal.id }}_${loop.count}"
-								        class="form-control col-sm-6">
-									<c:forEach items="${products}" var="product">
-										<c:if test="${product.id == meal.products[loop.index].id}">
-											<option value="${product.id}" selected>
-												<c:out
-														value="${product.name}"/>
-											</option>
-										</c:if>
-										<c:if test="${product.id != meal.products[loop.index].id}">
-											<option value="${product.id}">
-												<c:out
-														value="${product.name}"/>
-											</option>
-										</c:if>
-									</c:forEach>
-								</select>
-								<input name="add_quantity{{ meal.id }}_${loop.count}"
-								       value="${meal.products[loop.index].quantity}"
-								       id="add_quantity{{ meal.id }}_${loop.count}"
-								       type="number" class="form-control col-sm-2" placeholder="кол-во"
-								       required>
-								<select name="add_measure{{ meal.id }}_${loop.count}"
-								        id="add_measure{{ meal.id }}_${loop.count}"
-								        class="form-control col-sm-2">
-									<option selected>гр.</option>
-									<option>мл.</option>
-								</select>
-								<c:if test="${loop.count != meal.products.size()}">
-									<button class="col-sm-1 ing-button disabled"
-									        style="background-color: rgba(17, 70, 48, 0.66);"
-									        onclick="addRow(this, 'cur-products_additional${meal.id}',
-                                                                'cur-prod-option${meal.id}-',
-                                                                'add_product${meal.id}_', 'add_', '${meal.id}_')">
-										-
-									</button>
-								</c:if>
-								<c:if test="${loop.count == meal.products.size()}">
-									<button class="col-sm-1 ing-button"
-									        onclick="addRow(this, 'cur-products_additional${meal.id}',
-                                                                'cur-prod-option${meal.id}-', 'add_product${meal.id}_',
-                                                                'add_', '${meal.id}_')">
-										+
-									</button>
-								</c:if>
-							</div>
+					<div class="modal-body">
+						{{ meal.edit_form.management_form }}
+						{{ meal.edit_formset.management_form }}
+						{% for form in meal.edit_formset %}
+								<div class="row form-row spacer prod-option">
+									{{ form.product }}
+									{{ form.quantity }}
+									{{ form.unit }}
+									{% if forloop.last %}
+										<button class="btn btn-primary col-sm-1 ing-button add-form-row">+</button>
+									{% else %}
+										<button class="btn btn-danger col-sm-1 ing-button remove-form-row">-</button>
+									{% endif %}
+								</div>
 						{% endfor %}
 					</div>
 					<div class="modal-footer">

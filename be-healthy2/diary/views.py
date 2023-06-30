@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from datetime import datetime as dt, time
 
 from django.urls import reverse
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from diary.forms import CreateMealForm, MealProductFormSet
 from diary.models import Meal
@@ -29,9 +29,17 @@ def get_diary_page(request, date):
     start_time = dt.combine(page_date, time.min)
     end_time = dt.combine(page_date, time.max)
     year, month, day = date.split('-')
+    meals = Meal.objects.filter(user=request.user, date__range=(start_time, end_time))
+    for meal in meals:
+        meal.edit_form = CreateMealForm()
+        meal.edit_formset = MealProductFormSet(prefix=f"meal_{meal.id}", initial=[
+            {'product': p['product_id'], 'unit': p['unit'], 'quantity': p['quantity']}
+            for p in meal.product_amount.values()
+        ], extra=meal.product_amount.values().count())
+
     return render(request, 'diary/diary.html', {
         'profile': Profile.objects.get(user=request.user),
-        'meals': Meal.objects.filter(user=request.user, date__range=(start_time, end_time)),
+        'meals': meals,
         'total': Meal.get_daily_total(request.user, page_date),
         'date': {'full_date': date, 'year': year, 'month': month, 'day': day},
         'create_form': CreateMealForm(),
@@ -83,7 +91,7 @@ class MealCreateView(LoginRequiredMixin, CreateView):
         return success_url
 
 
-class MealDeleteView(DeleteView):
+class MealDeleteView(LoginRequiredMixin, DeleteView):
     model = Meal
 
     def get_object(self, queryset=None):
@@ -93,3 +101,41 @@ class MealDeleteView(DeleteView):
     def get_success_url(self):
         return reverse('diary', kwargs={'year': self.kwargs['year'], 'month': str(self.kwargs['month']).zfill(2),
                                         'day': str(self.kwargs['day']).zfill(2)})
+
+
+class UpdateMealView(LoginRequiredMixin, UpdateView):
+    model = Meal
+    form_class = CreateMealForm
+    template_name = 'diary/diary.html'
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['formset'] = MealProductFormSet(self.request.POST, instance=self.object)
+        else:
+            data['formset'] = MealProductFormSet(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+            return super().form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_object(self, queryset=None):
+        year = self.kwargs['year']
+        month = self.kwargs['month']
+        day = self.kwargs['day']
+        date_string = f'{year}-{month}-{day}'
+        date = datetime.datetime.strptime(date_string, '%Y-%m-%d').date()
+        return get_object_or_404(Meal, user=self.request.user, date=date)
+
+    def get_success_url(self):
+        return reverse('diary', kwargs={'year': self.kwargs['year'], 'month': str(self.kwargs['month']).zfill(2),
+                                        'day': str(self.kwargs['day']).zfill(2)})
+
