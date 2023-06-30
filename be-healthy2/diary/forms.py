@@ -1,10 +1,22 @@
 from django import forms
-from django.forms import TextInput, inlineformset_factory
+from django.forms import inlineformset_factory, BaseInlineFormSet
 
 from diary.models import Meal, MealProduct
 
 
-MealProductFormSet = inlineformset_factory(
+class CustomBaseInlineFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        extra = kwargs.pop('extra', 1)
+        super().__init__(*args, **kwargs)
+        self.extra = extra
+
+
+def custom_inlineformset_factory(*args, **kwargs):
+    kwargs['formset'] = CustomBaseInlineFormSet
+    return inlineformset_factory(*args, **kwargs)
+
+
+MealProductFormSet = custom_inlineformset_factory(
     Meal, MealProduct, extra=1, can_delete=True, can_delete_extra=True, fields=('product', 'unit', 'quantity'),
     widgets={
             'product': forms.Select(attrs={'class': 'form-control col-sm-6', 'required': 'true'}),
