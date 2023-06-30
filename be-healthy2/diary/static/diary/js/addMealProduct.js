@@ -8,3 +8,14 @@ $(document).on('click', '.create-remove-form-row', function(e){
     deleteForm('product_amount', $(this));
     return false;
 });
+function AddFormRowClick(selector, prefix) {
+    const button = $(selector).find('.add-form-row-'+prefix);
+    cloneMore(selector, prefix, 'add-form-row-'+prefix, 'remove-form-row-'+prefix, '-'+prefix);
+    button[0].setAttribute('onclick','DeleteFormRowClick( this, "' + prefix + '")');
+    return false;
+}
+function DeleteFormRowClick(selector, prefix) {
+    const button = $(selector)
+    deleteForm(prefix, button, '-'+prefix);
+    return false;
+}

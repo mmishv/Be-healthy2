@@ -5,6 +5,7 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<form method="post" action="" accept-charset="utf-8">
+				{% csrf_token %}
 					<div class="modal-header">
 						<input class="modal-title" name="title" placeholder="Название приёма пищи"
 						       value="{{ meal.name }}">
@@ -16,17 +17,26 @@
 						{{ meal.edit_form.management_form }}
 						{{ meal.edit_formset.management_form }}
 						{% for form in meal.edit_formset %}
-								<div class="row form-row spacer prod-option">
-									{{ form.product }}
-									{{ form.quantity }}
-									{{ form.unit }}
-									{% if forloop.last %}
-										<button class="btn btn-primary col-sm-1 ing-button add-form-row">+</button>
-									{% else %}
-										<button class="btn btn-secondary col-sm-1 ing-button remove-form-row">-</button>
-									{% endif %}
-								</div>
+							<div class="row form-row-meal_{{ meal.id }} spacer prod-option">
+								{{ form.product }}
+								{{ form.quantity }}
+								{{ form.unit }}
+								{% if forloop.last %}
+									<button onclick="AddFormRowClick('.form-row-meal_{{ meal.id }}:last',
+											'meal_{{ meal.id }}')"
+									        class="btn col-sm-1 ing-button btn-primary add-form-row-meal_{{ meal.id }}">
+										+
+									</button>
+								{% else %}
+									<button onclick="DeleteFormRowClick(this,
+											'meal_{{ meal.id }}')"
+									        class="btn col-sm-1 ing-button btn-secondary remove-form-row-meal_{{ meal.id }}">
+										-
+									</button>
+								{% endif %}
+							</div>
 						{% endfor %}
+
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Сохранить</button>
