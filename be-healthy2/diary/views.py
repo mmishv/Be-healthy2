@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -14,10 +15,12 @@ from userprofile.models import Profile
 from dateutil import parser
 
 
+@login_required
 def get_current_page(request):
     return get_diary_page(request, f'{datetime.date.today()}')
 
 
+@login_required
 def get_page_by_date(request, year, month, day):
     return get_diary_page(request, f'{year}-{month}-{day}')
 
@@ -42,14 +45,6 @@ class MealCreateView(LoginRequiredMixin, CreateView):
     template_name = 'diary/diary.html'
     form_class = CreateMealForm
 
-    def get(self, request, *args, **kwargs):
-        self.object = None
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        formset = MealProductFormSet()
-        return self.render_to_response(
-            self.get_context_data(form=form, formset=formset))
-
     def post(self, request, *args, **kwargs):
         self.object = None
         form = CreateMealForm(request.POST, request.FILES)
@@ -62,16 +57,19 @@ class MealCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form, formset, user):
         self.object = form.save(commit=False)
         self.object.user = user
-        self.object.save()
-        form.save_m2m()
-        formset.instance = self.object
-        formset.instance.user = self.request.user
+
         year, month, day = self.kwargs['year'], self.kwargs['month'], self.kwargs['day']
         date_string = f'{year}-{month}-{day}'
-        date = parser.parse(date_string).date()
-        current_time = dt.now().time()
-        formset.instance.date = dt.combine(date, current_time)
+        date = dt.strptime(date_string, '%Y-%m-%d')
+        self.object.date = date
+
+        self.object.save()
+        form.save_m2m()
+
+        formset.instance = self.object
+        formset.instance.user = self.request.user
         formset.save()
+
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):
