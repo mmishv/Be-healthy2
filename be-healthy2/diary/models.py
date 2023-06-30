@@ -30,6 +30,8 @@ class Meal(models.Model):
             kbju['j'] = kbju['j'] + product.quantity * float(product.product.fats) / 100
             kbju['u'] = kbju['u'] + product.quantity * float(product.product.carbohydrates) / 100
             kbju['quantity'] = kbju['quantity'] + product.quantity
+        for k, v in kbju.items():
+            kbju[k] = round(v, 1)
         return kbju
 
     @staticmethod
@@ -41,6 +43,8 @@ class Meal(models.Model):
         for meal in meals:
             for k, v in meal.kbju_with_quantity.items():
                 kbju[k] += v
+        for k, v in kbju.items():
+            kbju[k] = round(v, 1)
         return kbju
 
 
