@@ -5,7 +5,7 @@ function updateElementIndex(el, prefix, ndx) {
     if (el.id) el.id = el.id.replace(id_regex, replacement);
     if (el.name) el.name = el.name.replace(id_regex, replacement);
 }
-function cloneMore(selector, prefix, from, to) {
+function cloneMore(selector, prefix, from, to, suffix='') {
     var newElement = $(selector).clone(true);
     var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
     newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
@@ -26,16 +26,16 @@ function cloneMore(selector, prefix, from, to) {
     total++;
     $('#id_' + prefix + '-TOTAL_FORMS').val(total);
     $(selector).after(newElement);
-    var conditionRow = $('.form-row:not(:last)');
+    var conditionRow = $('.form-row'+suffix+':not(:last)');
     conditionRow.find('.btn.'+from)
     .removeClass('btn-primary').addClass('btn-secondary')
     .removeClass(from).addClass(to)
     .html('-');
     return false;
 }
-function deleteForm(prefix, btn) {
-        btn.closest('.form-row').remove();
-        var forms = $('.form-row');
+function deleteForm(prefix, btn, suffix='') {
+        btn.closest('.form-row'+suffix).remove();
+        var forms = $('.form-row'+suffix);
         $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
         for (var i=0, formCount=forms.length; i<formCount; i++) {
             $(forms.get(i)).find(':input').each(function() {
