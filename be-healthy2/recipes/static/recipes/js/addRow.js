@@ -5,7 +5,7 @@ function updateElementIndex(el, prefix, ndx) {
     if (el.id) el.id = el.id.replace(id_regex, replacement);
     if (el.name) el.name = el.name.replace(id_regex, replacement);
 }
-function cloneMore(selector, prefix) {
+function cloneMore(selector, prefix, from, to) {
     var newElement = $(selector).clone(true);
     var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
     newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
@@ -27,9 +27,9 @@ function cloneMore(selector, prefix) {
     $('#id_' + prefix + '-TOTAL_FORMS').val(total);
     $(selector).after(newElement);
     var conditionRow = $('.form-row:not(:last)');
-    conditionRow.find('.btn.add-form-row')
+    conditionRow.find('.btn.'+from)
     .removeClass('btn-primary').addClass('btn-secondary')
-    .removeClass('add-form-row').addClass('remove-form-row')
+    .removeClass(from).addClass(to)
     .html('-');
     return false;
 }
@@ -44,9 +44,10 @@ function deleteForm(prefix, btn) {
         }
     return false;
 }
+
 $(document).on('click', '.add-form-row', function(e){
     e.preventDefault();
-    cloneMore('.form-row:last', 'ingredient_amount');
+    cloneMore('.form-row:last', 'ingredient_amount', 'add-form-row', 'remove-form-row');
     return false;
 });
 $(document).on('click', '.remove-form-row', function(e){
