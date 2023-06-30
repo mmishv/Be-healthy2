@@ -3,16 +3,15 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from datetime import datetime as dt, time
 
 from django.urls import reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 
 from diary.forms import CreateMealForm, MealProductFormSet
 from diary.models import Meal
 from userprofile.models import Profile
-from dateutil import parser
 
 
 @login_required
@@ -82,3 +81,15 @@ class MealCreateView(LoginRequiredMixin, CreateView):
         success_url = reverse('diary', kwargs={'year': year, 'month': month, 'day': day})
 
         return success_url
+
+
+class MealDeleteView(DeleteView):
+    model = Meal
+
+    def get_object(self, queryset=None):
+        meal = get_object_or_404(Meal, id=self.kwargs['id'])
+        return meal
+
+    def get_success_url(self):
+        return reverse('diary', kwargs={'year': self.kwargs['year'], 'month': str(self.kwargs['month']).zfill(2),
+                                        'day': str(self.kwargs['day']).zfill(2)})
