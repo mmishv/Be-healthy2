@@ -133,9 +133,15 @@
     background-color: #114630 !important;
     border: none !important;
     width: 100% !important;
-    border: solid 2px white;
     padding: .75rem !important;
 }
+
+.btn.btn-primary {
+    background-color: #114630 !important;
+    opacity: 0.9;
+    border: none;
+}
+
 
 /*scroll*/
 .scroll {
