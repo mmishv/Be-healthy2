@@ -9,7 +9,8 @@
 					{% csrf_token %}
 					<div class="modal-header">
 						{{ edit_form.name }}
-						<input class="modal-title" name="{{ meal.edit_form.name.html_name }}" placeholder="Название приёма пищи"
+						<input class="modal-title" name="{{ meal.edit_form.name.html_name }}"
+						       placeholder="Название приёма пищи"
 						       value="{{ meal.name }}">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>

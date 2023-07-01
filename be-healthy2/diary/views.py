@@ -3,7 +3,7 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from datetime import datetime as dt, time
 
 from django.urls import reverse
@@ -80,7 +80,7 @@ class MealCreateView(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):
-        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+        return redirect(f'/diary/{self.kwargs["year"]}-{self.kwargs["month"]}-{self.kwargs["day"]}')
 
     def get_success_url(self):
         year = self.kwargs['year']
@@ -101,6 +101,11 @@ class MealDeleteView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse('diary', kwargs={'year': self.kwargs['year'], 'month': str(self.kwargs['month']).zfill(2),
                                         'day': str(self.kwargs['day']).zfill(2)})
+
+    def get_cancel_url(self):
+        return reverse('diary', kwargs={'year': self.kwargs['year'], 'month': str(self.kwargs['month']).zfill(2),
+                                        'day': str(self.kwargs['day']).zfill(2)})
+
 
 
 class MealUpdateView(LoginRequiredMixin, UpdateView):
@@ -140,10 +145,8 @@ class MealUpdateView(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):
-        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+        return redirect(f'/diary/{self.kwargs["year"]}-{self.kwargs["month"]}-{self.kwargs["day"]}')
 
     def get_success_url(self):
         return reverse('diary', kwargs={'year': self.kwargs['year'], 'month': str(self.kwargs['month']).zfill(2),
                                         'day': str(self.kwargs['day']).zfill(2)})
-
-
