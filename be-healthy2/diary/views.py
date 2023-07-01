@@ -54,7 +54,7 @@ class MealCreateView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        form = CreateMealForm(request.POST, request.FILES)
+        form = CreateMealForm(request.POST)
         formset = MealProductFormSet(request.POST)
         if form.is_valid() and formset.is_valid():
             return self.form_valid(form, formset, request.user)
@@ -103,39 +103,47 @@ class MealDeleteView(LoginRequiredMixin, DeleteView):
                                         'day': str(self.kwargs['day']).zfill(2)})
 
 
-class UpdateMealView(LoginRequiredMixin, UpdateView):
+class MealUpdateView(LoginRequiredMixin, UpdateView):
     model = Meal
-    form_class = CreateMealForm
     template_name = 'diary/diary.html'
+    form_class = CreateMealForm
+    formset_class = MealProductFormSet
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.object
+        return kwargs
 
     def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        if self.request.POST:
-            data['formset'] = MealProductFormSet(self.request.POST, instance=self.object)
-        else:
-            data['formset'] = MealProductFormSet(instance=self.object)
-        return data
+        context = super().get_context_data(**kwargs)
+        meal = get_object_or_404(Meal, id=self.kwargs['id'])
+        formset = MealProductFormSet(instance=meal, prefix=f"meal_{meal.id}")
+        context['formset'] = formset
+        return context
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        if formset.is_valid():
-            self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Meal, id=self.kwargs['id'])
+        form = self.get_form()
+        formset = MealProductFormSet(request.POST, instance=self.object, prefix=f"meal_{self.object.id}")
+        if form.is_valid() and formset.is_valid():
+            return self.form_valid(form, formset)
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.form_invalid(form, formset)
 
-    def get_object(self, queryset=None):
-        year = self.kwargs['year']
-        month = self.kwargs['month']
-        day = self.kwargs['day']
-        date_string = f'{year}-{month}-{day}'
-        date = datetime.datetime.strptime(date_string, '%Y-%m-%d').date()
-        return get_object_or_404(Meal, user=self.request.user, date=date)
+    def form_valid(self, form, formset):
+        self.object = form.save(commit=False)
+        form.instance.products.set([])
+        form.instance.save()
+        formset.save(commit=False)
+        formset.instance = self.object
+        formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, formset):
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
     def get_success_url(self):
         return reverse('diary', kwargs={'year': self.kwargs['year'], 'month': str(self.kwargs['month']).zfill(2),
                                         'day': str(self.kwargs['day']).zfill(2)})
+
 

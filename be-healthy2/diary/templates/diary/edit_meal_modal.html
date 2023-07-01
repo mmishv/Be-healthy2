@@ -4,8 +4,9 @@
 	     aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<form method="post" action="" accept-charset="utf-8">
-				{% csrf_token %}
+				<form method="post" action="{% url 'edit meal' date.year date.month date.day meal.id %}"
+				      accept-charset="utf-8">
+					{% csrf_token %}
 					<div class="modal-header">
 						<input class="modal-title" name="title" placeholder="Название приёма пищи"
 						       value="{{ meal.name }}">
@@ -14,7 +15,6 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						{{ meal.edit_form.management_form }}
 						{{ meal.edit_formset.management_form }}
 						{% for form in meal.edit_formset %}
 							<div class="row form-row-meal_{{ meal.id }} spacer prod-option">
