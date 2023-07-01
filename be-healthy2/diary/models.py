@@ -12,7 +12,7 @@ class Meal(models.Model):
     name = models.CharField('Название', max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='meals')
     products = models.ManyToManyField(Product, through='MealProduct', related_name='meals')
-    date = models.DateTimeField('Дата', default=timezone.now, blank=True)
+    date = models.DateTimeField('Дата', auto_now=True, blank=True,  editable=False)
 
     def __str__(self):
         return f'Meal: {self.user}, {self.date}'
