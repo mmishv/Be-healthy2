@@ -5,5 +5,6 @@ from .views import FullArticleView
 urlpatterns = [
     path('', views.index, name='main'),
     path('article/<int:article_id>/<slug:slug>', FullArticleView.as_view(), name='article details'),
-    path('products', views.product_base, name='product base')
+    path('products', views.product_base, name='product base'),
+    path('products/mixer', views.MixerFormSetView.as_view(), name='mixer')
 ]

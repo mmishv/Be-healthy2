@@ -60,6 +60,7 @@ input {
 }
 
 /*buttons*/
+
 .btn.btn-black {
     background-color: black !important;
     margin: 2% 0 0 0 !important;
@@ -70,9 +71,8 @@ input {
     border-color: black !important;
     color: white;
     border-radius: 5px !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
     cursor: pointer;
+    padding: 0.375rem 0.75rem !important;
 }
 
 .back-btn {
@@ -81,6 +81,7 @@ input {
     color: white !important;
     position: absolute;
     margin-left: 2%;
+    z-index: 10;
 }
 
 .back-btn a {
