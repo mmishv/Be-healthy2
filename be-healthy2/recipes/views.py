@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.views.generic import CreateView
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView
 
 from recipes.forms import AddRecipeForm, IngredientFormSet
 from recipes.models import Recipe, RecipeCategory
@@ -65,3 +66,13 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form, formset):
         return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+
+class RecipeDeleteView(LoginRequiredMixin, DeleteView):
+    model = Recipe
+    success_url = '/profile/my-recipes'
+    pk_url_kwarg = 'id'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Recipe, id=self.kwargs['id'])
+

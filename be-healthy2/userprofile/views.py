@@ -87,7 +87,7 @@ class LogoutView(LoginRequiredMixin, View):
 
 @login_required
 def my_recipes(request):
-    recipes = Recipe.objects.filter(author_id=request.user.id)
+    recipes = Recipe.objects.filter(author_id=request.user.id).order_by('-date')
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
