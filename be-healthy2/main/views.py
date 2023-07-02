@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views.generic import DetailView
 
-from .forms import CalculatorForm
+from recipes.models import Product
+from .forms import CalculatorForm, MixerProductFormSet
 from .models import Article
 
 
@@ -43,4 +44,6 @@ class FullArticleView(DetailView):
 
 def product_base(request):
     return render(request, 'main/products.html', {
+        'products': Product.objects.all(),
+        'mixer_formset': MixerProductFormSet(prefix='product_amount')
     })

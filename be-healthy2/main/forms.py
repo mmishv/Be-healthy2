@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import formset_factory
+from recipes.models import UNIT_CHOICES, Product
 
 SEX_CHOICES = [
     ('female', 'Женский'),
@@ -44,3 +46,14 @@ class CalculatorForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-control col-sm-8'})
     )
 
+
+class MixerProductForm(forms.Form):
+    product = forms.ModelChoiceField(queryset=Product.objects.all(),
+                                     widget=forms.Select(attrs={'class': 'form-control col-sm-6', 'required': 'true'}))
+    unit = forms.ChoiceField(choices=UNIT_CHOICES,
+                             widget=forms.Select(attrs={'class': 'form-control col-sm-2', 'required': 'true'}))
+    quantity = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control col-sm-2', 'required': 'true', 'placeholder': "кол-во"}))
+
+
+MixerProductFormSet = formset_factory(MixerProductForm, extra=1)
