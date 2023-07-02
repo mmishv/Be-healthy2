@@ -1,0 +1,51 @@
+{% extends 'main/header.html' %}
+{% load static %}
+{% block title %}Микшер{% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="../../static/main/css/product.css">
+{% endblock %}
+{% block content %}
+	<div class="background">
+    <div class="background-cover"></div>
+</div>
+<div>
+    <button onclick="history.back();" class="btn btn-primary back-btn">
+        &#8592; Назад
+    </button>
+    <h3 class="mixer-header">Микшер рецептов: результат вашего запроса</h3>
+</div>
+<div class="table-wrapper">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" style="width: 27%;">Продукт</th>
+            <th scope="col" style="width: 13%;">Белки, гр.</th>
+            <th scope="col" style="width: 13%;">Жиры, гр.</th>
+            <th scope="col" style="width: 14%;">Углеводы, гр.</th>
+            <th scope="col" style="width: 20%;">Количество, гр.</th>
+            <th scope="col" style="width: 13%;">Калории</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ingredient in ingredients %}
+            <tr>
+                <td style="text-align: left; padding-left: 2%;">{{ ingredient.product.name }}</td>
+                <td>{{ ingredient.kbju.b }}</td>
+                <td>{{ ingredient.kbju.j }}</td>
+                <td>{{ ingredient.kbju.u }}</td>
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.kbju.k }}</td>
+            </tr>
+        {%  endfor %}
+        <tr class="result">
+            <td style="text-align: left; padding-left: 2%;">Итого</td>
+            <td>{{ total.b }}</td>
+            <td>{{ total.j }}</td>
+            <td>{{ total.u }}</td>
+            <td>{{ total.weight }}</td>
+            <td>{{ total.k }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
