@@ -1,9 +1,11 @@
 from django.core.paginator import Paginator
+from django.forms import formset_factory
 from django.shortcuts import render
+from django.views import View
 from django.views.generic import DetailView
 
 from recipes.models import Product
-from .forms import CalculatorForm, MixerProductFormSet
+from .forms import CalculatorForm, MixerProductFormSet, MixerProductForm
 from .models import Article
 
 
@@ -47,3 +49,30 @@ def product_base(request):
         'products': Product.objects.all(),
         'mixer_formset': MixerProductFormSet(prefix='product_amount')
     })
+
+
+class MixerFormSetView(View):
+    formset_class = formset_factory(MixerProductForm, extra=1)
+    template_name = 'main/mixer.html'
+
+    def get(self, request):
+        formset = self.formset_class(request.GET, prefix='product_amount')
+        products = []
+        total = {'k': 0, 'b': 0, 'j': 0, 'u': 0}
+        weight = 0
+        if formset.is_valid():
+            for form in formset:
+                product = form.cleaned_data['product']
+                unit = form.cleaned_data['unit']
+                quantity = form.cleaned_data['quantity']
+                weight += quantity
+                per_100 = lambda x: round(quantity * x / 100, 1)
+                products.append({'product': product, 'unit': unit, 'quantity': quantity,
+                                 'kbju': {'k': per_100(product.calories), 'b': per_100(product.proteins),
+                                          'j': per_100(product.fats), 'u': per_100(product.carbohydrates)}})
+                for k, v in total.items():
+                    total[k] = v + products[-1]['kbju'][k]
+            total['weight'] = weight
+            return render(request, self.template_name, {'ingredients': products, 'total': total})
+
+        return render(request, 'main/products.html', {'mixer_formset': formset})

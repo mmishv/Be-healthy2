@@ -107,7 +107,6 @@ class MealDeleteView(LoginRequiredMixin, DeleteView):
                                         'day': str(self.kwargs['day']).zfill(2)})
 
 
-
 class MealUpdateView(LoginRequiredMixin, UpdateView):
     model = Meal
     template_name = 'diary/diary.html'
