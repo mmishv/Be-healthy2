@@ -1,0 +1,79 @@
+{% extends 'main/header.html' %}
+{% load static %}
+{% block title %}Продукты/Микшер{% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="../../static/main/css/product.css">
+{% endblock %}
+{% block content %}
+	<div class="background">
+		<div class="background-cover"></div>
+	</div>
+	<div class="row">
+		<div class="mixer">
+			<h3>Микшер рецептов</h3>
+			<form method="get" action="/mixer" accept-charset="utf-8">
+				<div id="products">
+					<div class="product-inf d-flex center" id="product-inf1">
+						<select id="product1" name="product1" class="form-control col-sm-6">
+							<c:forEach items="${products}" var="product">
+								<option value="${product.id}">
+									<c:out value="${product.name}"/>
+								</option>
+							</c:forEach>
+						</select>
+						<input class="col-sm-2 form-control" type="number" name="quantity1" id="quantity1"
+						       placeholder="кол-во" required>
+						<select class="form-control col-sm-2" name="measure1" id="measure1">
+							<option selected>гр.</option>
+							<option>мл.</option>
+						</select>
+						<button type="button" class="col-sm-1 ing-button"
+						        onclick="addRow(this, 'products', 'product-inf', 'product')">+
+						</button>
+					</div>
+				</div>
+				<div style="display: flex; justify-content: flex-end;">
+					<button type="submit" class="btn btn-primary btn-black scaled">Рассчитать</button>
+				</div>
+			</form>
+		</div>
+		<div class="product-table">
+			<h4 style="opacity: 0.8; margin-top: 0 !important;">База продуктов</h4>
+			<div class="form-group">
+				<input class="form-control" id="search" placeholder="Поиск по названию ..." autocomplete="off"
+				       name="search" type="text" oninput="tableSearch();">
+			</div>
+			<table class="table" id="table-search">
+				<thead>
+				<tr>
+					<th scope="col" style="width: 40%;">Продукт</th>
+					<th scope="col" style="width: 15%;">Белки, г</th>
+					<th scope="col" style="width: 15%;">Жиры, г</th>
+					<th scope="col" style="width: 15%;">Углеводы, г</th>
+					<th scope="col" style="width: 15%;">Калории, г</th>
+				</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${products}" var="p">
+					<tr>
+						<td style="text-align: left; padding-left: 2%;" class="searchable">${p.name}</td>
+						<td>${p.proteins}</td>
+						<td>${p.fats}</td>
+						<td>${p.carbohydrates}</td>
+						<td>${p.calories}</td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td style="text-align: left; padding-left: 2%;">Продукт</td>
+					<td>20</td>
+					<td>15</td>
+					<td>20</td>
+					<td>15</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script src="{% static 'recipes/js/addRow.js' %}"></script>
+	<script src="{% static 'main/js/tableSearch.js' %}"></script>
+{% endblock %}

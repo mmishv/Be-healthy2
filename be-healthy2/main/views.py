@@ -39,3 +39,8 @@ class FullArticleView(DetailView):
     model = Article
     template_name = 'main/article_detail.html'
     context_object_name = 'article'
+
+
+def product_base(request):
+    return render(request, 'main/products.html', {
+    })

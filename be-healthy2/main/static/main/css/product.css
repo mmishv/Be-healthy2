@@ -1,0 +1,129 @@
+.mixer {
+    color: white;
+    background-color: #114630;
+    opacity: 0.8;
+    height: 100%;
+    padding: 1%;
+    width: 35%;
+    margin: 2% auto !important;
+    border-radius: 10px;
+
+}
+
+/*headers*/
+h3 {
+    text-align: center;
+    margin-bottom: 3vh !important;
+}
+
+h4 {
+    text-align: center;
+    color: white !important;
+    margin-top: 0 !important;
+}
+
+/*mixer*/
+.mixer-header {
+    color: white;
+    position: relative;
+    text-align: center;
+    margin-top: 2%;
+}
+
+.product-inf {
+    justify-content: space-between;
+    margin: 1%;
+}
+
+.col-sm-2, .col-sm-7 {
+    padding: 7px 5px !important;
+}
+
+select.col-sm-2 {
+    padding: 0 !important;
+    margin: 5px !important;
+}
+
+input {
+    height: fit-content;
+    align-self: center;
+}
+
+/*buttons*/
+.btn {
+    background-color: white !important;
+    border: none !important;
+    margin: 5px auto 0 5px;
+}
+
+.btn.btn-black {
+    background-color: black !important;
+    margin: 2% 0 0 0 !important;
+}
+
+.ing-button {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    cursor: pointer;
+}
+
+.back-btn {
+    background-color: #00000000 !important;
+    border: solid 2px white !important;
+    color: white !important;
+    position: absolute;
+    margin-left: 2%;
+}
+
+.back-btn a {
+    color: white !important;
+}
+
+.back-btn a:hover {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/*table*/
+.table-wrapper {
+    margin: 2% auto;
+    background-color: white;
+    width: 60%;
+    position: relative;
+    min-width: 800px;
+}
+
+.table-wrapper table th,
+.product-table table th {
+    font-weight: 500 !important;
+    background-color: #4bc1798a;
+}
+
+.table-wrapper table td, .table-wrapper table th,
+.product-table table td, .product-table table th {
+    text-align: center;
+    border: solid 1px #cfd4d9;
+}
+
+.table-wrapper table .result {
+    background-color: #4bc1794a;
+    font-weight: 500;
+}
+
+.row {
+    margin: 0 !important;
+}
+
+.product-table {
+    margin: 3% auto;
+    width: 60%;
+    position: relative;
+    display: inline;
+}
+
+#table-search {
+    background-color: white;
+}
