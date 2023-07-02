@@ -1,10 +1,12 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import UpdateView
 
+from recipes.models import Recipe
 from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm, MainInfoProfileForm
 from userprofile.models import Profile
 
@@ -81,3 +83,12 @@ class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect('auth')
+
+
+@login_required
+def my_recipes(request):
+    recipes = Recipe.objects.filter(author_id=request.user.id)
+    paginator = Paginator(recipes, 6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'userprofile/general/my_recipes.html', {'page': page, 'my_recipes': True})

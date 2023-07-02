@@ -2,12 +2,12 @@
 {% load static %}
 {% block title %}Новый рецепт{% endblock %}
 {% block head %}
-	<link rel="stylesheet" href="../../static/recipes/css/recipes.css">
-	<link rel="stylesheet" href="../../static/recipes/css/new_recipe.css">
+	<link rel="stylesheet" href="{% static 'recipes/css/recipes.css' %}">
+	<link rel="stylesheet" href="{% static 'recipes/css/new_recipe.css' %}">
 {% endblock %}
 {% block content %}
 	<form method="post" action="" enctype="multipart/form-data" accept-charset="utf-8">
-	 {% csrf_token %}
+		{% csrf_token %}
 		<fieldset class="form-group">
 			<div class="wrapper col-sm-9" style="margin: auto;">
 				<div class="form-group row">

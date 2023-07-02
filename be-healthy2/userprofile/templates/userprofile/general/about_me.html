@@ -4,7 +4,7 @@
 {% load crispy_forms_tags %}
 {% block title %}Профиль{% endblock %}
 {% block head %}
-	<link rel="stylesheet" href="../../../static/userprofile/css/about_me.css">
+	<link rel="stylesheet" href="{% static 'userprofile/css/profile.css' %}">
 {% endblock %}
 {% block content %}
 	<div class="background">
@@ -71,8 +71,9 @@
 									<div class="form-check form-check-inline">
 										<input name="sex" class="form-check-input large" type="radio"
 										       id="{{ radio.id_for_label }}"
-										       value="{{ radio.data.value}}"
-										       {% if radio.choice_label == profile.get_sex_display %} checked{% endif %} >
+										       value="{{ radio.data.value }}"
+												{% if radio.choice_label == profile.get_sex_display %}
+                                               checked{% endif %} >
 										<label class="form-check-label" for="{{ radio.id_for_label }}">
 											{{ radio.choice_label }}
 										</label>
@@ -156,7 +157,8 @@
 					<h6 class="col-sm-12">
 						{% if profile.calories_recommendation != 0 %}
 							* рекомедуется: {{ profile.calories_recommendation }} ккал,
-							{{ profile.proteins_recommendation }}/{{ profile.fats_recommendation }}/{{ profile.carbohydrates_recommendation }}
+							{{ profile.proteins_recommendation }}/{{ profile.fats_recommendation }}/
+							{{ profile.carbohydrates_recommendation }}
 						{% else %}
 							* пожалуйста, введите информацию о своем росте, возрасте и весе, чтобы мы могли дать Вам
 							рекомендации
@@ -188,7 +190,8 @@
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label for="{{ modal_form.avatar.id_for_label }}" class="col-sm-5 bold">Загрузить фото</label>
+							<label for="{{ modal_form.avatar.id_for_label }}" class="col-sm-5 bold">Загрузить
+							                                                                        фото</label>
 							<div class="col-sm-7">
 								{{ modal_form.avatar }}
 							</div>
