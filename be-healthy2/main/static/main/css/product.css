@@ -10,6 +10,16 @@
 
 }
 
+.prod-option select, .prod-option input, .prod-option button,
+.cur-prod-option select, .cur-prod-option input, .cur-prod-option button {
+    margin: 0 auto !important;
+}
+
+.row {
+    margin: 0 !important;
+    padding: 0 2%;
+}
+
 /*headers*/
 h3 {
     text-align: center;
@@ -50,21 +60,16 @@ input {
 }
 
 /*buttons*/
-.btn {
-    background-color: white !important;
-    border: none !important;
-    margin: 5px auto 0 5px;
-}
-
 .btn.btn-black {
     background-color: black !important;
     margin: 2% 0 0 0 !important;
 }
 
-.ing-button {
-    background-color: black;
+.ing-button, .btn-primary {
+    background-color: black !important;
+    border-color: black !important;
     color: white;
-    border-radius: 5px;
+    border-radius: 5px !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     cursor: pointer;
@@ -85,6 +90,10 @@ input {
 .back-btn a:hover {
     color: white !important;
     text-decoration: none !important;
+}
+
+.btn-secondary{
+    background-color: #3f3f3f !important;
 }
 
 /*table*/
