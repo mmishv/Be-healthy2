@@ -1,11 +1,14 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.forms import formset_factory
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, CreateView
 
 from recipes.models import Product
-from .forms import CalculatorForm, MixerProductFormSet, MixerProductForm
+from .forms import CalculatorForm, MixerProductFormSet, MixerProductForm, CreateArticleForm
 from .models import Article
 
 
@@ -76,3 +79,24 @@ class MixerFormSetView(View):
             return render(request, self.template_name, {'ingredients': products, 'total': total})
 
         return render(request, 'main/products.html', {'mixer_formset': formset})
+
+
+class ArticleCreateView(LoginRequiredMixin, CreateView):
+    model = Article
+    template_name = 'main/create_article.html'
+    form_class = CreateArticleForm
+    success_url = reverse_lazy('my articles')
+
+    def post(self, request, *args, **kwargs):
+        form = CreateArticleForm(request.POST)
+        if form.is_valid():
+            return self.form_valid(form, request.user)
+        else:
+            return HttpResponseRedirect(self.get_success_url())
+
+    def form_valid(self, form, user):
+        self.object = form.save(commit=False)
+        self.object.author = user
+        self.object.save()
+        form.save_m2m()
+        return HttpResponseRedirect(self.get_success_url())
