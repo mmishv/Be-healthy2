@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import TextInput, Textarea, FileInput
+from django.forms import TextInput, Textarea, FileInput, NumberInput
 
 from diary.forms import custom_inlineformset_factory
 from .models import Recipe, Ingredient
@@ -27,7 +27,7 @@ class CreateRecipeForm(forms.ModelForm):
         fields = ('title', 'categories', 'cooking_time', 'text', 'image')
         widgets = {
             'title': TextInput(attrs={'placeholder': "Например, оладьи", 'class': "form-control", 'required': 'true'}),
-            'cooking_time': TextInput(
+            'cooking_time': NumberInput(
                 attrs={'placeholder': "Например, 30", 'class': "form-control", 'required': 'true'}),
             'image': FileInput(
                 attrs={'class': 'form-control-file', 'accept': "image/png, image/jpeg"}),

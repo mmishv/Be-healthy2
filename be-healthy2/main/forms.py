@@ -1,5 +1,7 @@
 from django import forms
-from django.forms import formset_factory
+from django.forms import formset_factory, TextInput, NumberInput, Textarea
+
+from main.models import Article
 from recipes.models import UNIT_CHOICES, Product
 
 SEX_CHOICES = [
@@ -57,3 +59,16 @@ class MixerProductForm(forms.Form):
 
 
 MixerProductFormSet = formset_factory(MixerProductForm, extra=1)
+
+
+class CreateArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'full_text', 'categories']
+        widgets = {
+            'title': TextInput(attrs={'placeholder': "Например, Правильное питание - верный путь к здоровью",
+                                      'class': "form-control", 'required': 'true'}),
+            'full_text': Textarea(
+                attrs={'class': "form-control col-sm-8", 'required': 'true', 'rows': '5'}),
+            'categories': forms.CheckboxSelectMultiple(),
+        }
