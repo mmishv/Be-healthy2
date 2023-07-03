@@ -43,7 +43,7 @@ def index(request):
 
 class FullArticleView(DetailView):
     model = Article
-    template_name = 'main/article_detail.html'
+    template_name = 'main/articles/article_detail.html'
     context_object_name = 'article'
 
 
@@ -83,7 +83,7 @@ class MixerFormSetView(View):
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
-    template_name = 'main/create_article.html'
+    template_name = 'main/articles/create_article.html'
     form_class = CreateArticleForm
     success_url = reverse_lazy('my articles')
 

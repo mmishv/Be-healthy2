@@ -1,4 +1,4 @@
-{% extends 'main/header.html' %}
+{% extends 'main/common/header.html' %}
 {% load static %}
 {% block title %}Главная{% endblock %}
 {% block head %}
@@ -26,7 +26,7 @@
 					</div>
 				</div>
 			{% endfor %}
-			{% include 'main/pagination.html' %}
+			{% include 'main/common/pagination.html' %}
 		</div>
 	</div>
 {% endblock %}

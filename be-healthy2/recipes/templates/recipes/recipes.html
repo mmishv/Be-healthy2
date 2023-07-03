@@ -1,4 +1,4 @@
-{% extends 'main/header.html' %}
+{% extends 'main/common/header.html' %}
 {% load static %}
 {% block title %}Главная{% endblock %}
 {% block head %}
@@ -23,7 +23,7 @@
 				<button type="button" class="btn add-button">
 					<a href="{% url 'create_recipe' %}">Добавить рецепт</a></button>
 			{% endif %}
-			{% include 'main/pagination.html' %}
+			{% include 'main/common/pagination.html' %}
 			<div class="recipe-wrapper">
 				{% for recipe in page %}
 					{% include 'recipes/recipe_card.html' %}
