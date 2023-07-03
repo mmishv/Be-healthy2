@@ -1,5 +1,6 @@
 from django.urls import path
 
+from main.views import ArticleCreateView
 from recipes.views import RecipeDeleteView, RecipeUpdateView
 from . import views
 
@@ -16,4 +17,7 @@ urlpatterns = [
      path('my-recipes', views.my_recipes, name='my recipes'),
      path('delete-recipe/<int:id>', RecipeDeleteView.as_view(), name='delete recipe'),
      path('edit-recipe/<int:id>', RecipeUpdateView.as_view(), name='edit recipe'),
+
+     path('my-articles', views.my_articles, name='my articles'),
+     path('create-article', ArticleCreateView.as_view(), name='create article'),
 ]

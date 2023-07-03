@@ -132,6 +132,25 @@ select.form-control {
     box-shadow: none !important;
 }
 
+.add-button {
+    display: block !important;
+    text-align: center;
+    background-color: white !important;
+    width: fit-content;
+    margin: 3vh auto 0 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.add-button a {
+    color: black !important;
+}
+
+.add-button a:hover {
+    color: black !important;
+    text-decoration: none !important;
+}
+
 .exit-buttons {
     position: absolute;
     margin-top: 3vh;

@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import UpdateView
 
+from main.models import Article
 from recipes.models import Recipe
 from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm, MainInfoProfileForm
 from userprofile.models import Profile
@@ -92,3 +93,12 @@ def my_recipes(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'userprofile/general/my_recipes.html', {'page': page, 'my_recipes': True})
+
+
+@login_required
+def my_articles(request):
+    articles = Article.objects.filter(author_id=request.user.id).order_by('-date')
+    paginator = Paginator(articles, 6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'userprofile/general/my_articles.html', {'page': page})
