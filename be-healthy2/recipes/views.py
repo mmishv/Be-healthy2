@@ -1,11 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DeleteView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import CreateView, DeleteView, UpdateView
 
-from recipes.forms import AddRecipeForm, IngredientFormSet
+from recipes.forms import CreateRecipeForm, IngredientFormSet
 from recipes.models import Recipe, RecipeCategory
 
 
@@ -34,7 +33,7 @@ def category(request, category_id, slug):
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     template_name = 'recipes/new_recipe.html'
-    form_class = AddRecipeForm
+    form_class = CreateRecipeForm
     success_url = '/recipes'
 
     def get(self, request, *args, **kwargs):
@@ -47,7 +46,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = None
-        form = AddRecipeForm(request.POST, request.FILES)
+        form = CreateRecipeForm(request.POST, request.FILES)
         formset = IngredientFormSet(request.POST)
         if form.is_valid() and formset.is_valid():
             return self.form_valid(form, formset, request.user)
@@ -76,3 +75,59 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=None):
         return get_object_or_404(Recipe, id=self.kwargs['id'])
 
+
+class RecipeUpdateView(LoginRequiredMixin, UpdateView):
+    model = Recipe
+    template_name = 'recipes/edit_recipe.html'
+    form_class = CreateRecipeForm
+    formset_class = IngredientFormSet
+    success_url = '/profile/my-recipes'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.object
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.object = get_object_or_404(Recipe, id=self.kwargs['id'])
+        formset = IngredientFormSet(instance=self.object)
+        context['formset'] = formset
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Recipe, id=self.kwargs['id'])
+        recipe = self.object
+        form = CreateRecipeForm(is_image_required=False)
+        formset = IngredientFormSet(initial=[
+            {'product': p['product_id'], 'unit': p['unit'], 'quantity': p['quantity']}
+            for p in recipe.ingredient_amount.values()], extra=recipe.ingredient_amount.values().count())
+        return self.render_to_response(self.get_context_data(recipe=recipe, form=form, formset=formset,
+                                                             category_names=recipe.categories.all().values_list(
+                                                                 'name', flat=True)))
+
+    def post(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Recipe, id=self.kwargs['id'])
+        form = CreateRecipeForm(request.POST, request.FILES, is_image_required=False, instance=self.object)
+        formset = IngredientFormSet(request.POST, instance=self.object)
+        if form.is_valid() and formset.is_valid():
+            return self.form_valid(form, formset)
+        else:
+            return self.form_invalid(form, formset)
+
+    def form_valid(self, form, formset):
+        self.object.categories.clear()
+        self.object.ingredients.clear()
+        self.object = form.save(commit=False)
+        form.instance.save()
+        form.save_m2m()
+        for form in formset.forms:
+            instance = form.save(commit=False)
+            instance.recipe = self.object
+            instance.save()
+        formset.save()
+        formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, formset):
+        return redirect('/profile/my-recipes')
