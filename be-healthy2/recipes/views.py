@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
 
 from recipes.forms import CreateRecipeForm, IngredientFormSet
@@ -34,7 +35,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     template_name = 'recipes/new_recipe.html'
     form_class = CreateRecipeForm
-    success_url = '/recipes'
+    success_url = reverse_lazy('main recipes')
 
     def get(self, request, *args, **kwargs):
         self.object = None
@@ -69,11 +70,8 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 
 class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipe
-    success_url = '/profile/my-recipes'
+    success_url = reverse_lazy('my recipes')
     pk_url_kwarg = 'id'
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(Recipe, id=self.kwargs['id'])
 
 
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
@@ -81,7 +79,7 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'recipes/edit_recipe.html'
     form_class = CreateRecipeForm
     formset_class = IngredientFormSet
-    success_url = '/profile/my-recipes'
+    success_url = reverse_lazy('my recipes')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -130,4 +128,4 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):
-        return redirect('/profile/my-recipes')
+        return redirect(self.get_success_url())

@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, DeleteView
 
 from recipes.models import Product
 from .forms import CalculatorForm, MixerProductFormSet, MixerProductForm, CreateArticleForm
@@ -100,3 +100,9 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         self.object.save()
         form.save_m2m()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class ArticleDeleteView(LoginRequiredMixin, DeleteView):
+    model = Article
+    success_url = reverse_lazy('my articles')
+    pk_url_kwarg = 'id'
