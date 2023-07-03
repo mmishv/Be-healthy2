@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
@@ -22,7 +23,7 @@ class Article(models.Model):
     full_text = models.TextField('Текст статьи')
     date = models.DateTimeField('Дата публикации', auto_now_add=True, db_index=True)
     author = models.ForeignKey(
-        Profile,
+        User,
         on_delete=models.CASCADE,
         related_name='articles',
         verbose_name='Автор статьи'
