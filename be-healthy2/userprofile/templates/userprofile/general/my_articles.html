@@ -39,7 +39,7 @@
 										</svg>
 									</button>
 								</form>
-								<form method="get" action="">
+								<form method="get" action="{% url 'edit article' article.id %}">
 									{% csrf_token %}
 									<button type="submit" class="btn scaled">
 										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
