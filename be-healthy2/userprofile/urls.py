@@ -49,4 +49,10 @@ urlpatterns = [
 
      path('admin/recipes', views.admin_section_recipes, name='recipes management'),
      path('admin/delete-recipe/<int:recipe_id>', views.delete_recipe, name='delete recipe admin'),
+
+     path('admin/recipes-moderation', views.admin_section_recipes_moderation, name='recipes moderation'),
+     path('admin/approve-recipe/<int:recipe_id>', views.approve_recipe, name='approve recipe'),
+
+     path('admin/articles-moderation', views.admin_section_articles_moderation, name='articles moderation'),
+     path('admin/approve-article/<int:article_id>', views.approve_article, name='approve article'),
 ]

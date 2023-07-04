@@ -196,3 +196,37 @@ def delete_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     recipe.delete()
     return redirect(reverse_lazy('recipes management'))
+
+
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_recipes_moderation(request):
+    recipes = Recipe.objects.filter(moderated=False).order_by('-date')
+    paginator = Paginator(recipes, 6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'userprofile/admin/recipes_moderation.html', {'page': page, 'moderation': True})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def approve_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    recipe.moderated = True
+    recipe.save()
+    return redirect(reverse_lazy('recipes moderation'))
+
+
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_articles_moderation(request):
+    articles = Article.objects.filter(moderated=False).order_by('-date')
+    paginator = Paginator(articles, 6)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'userprofile/admin/articles-moderation.html', {'page': page, 'moderation': True})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def approve_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    article.moderated = True
+    article.save()
+    return redirect(reverse_lazy('articles moderation'))

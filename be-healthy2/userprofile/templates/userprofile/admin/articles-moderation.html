@@ -1,0 +1,26 @@
+{% extends 'main/common/header.html' %}
+{% load static %}
+{% block title %}Модерация рецептов{% endblock %}
+{% block head %}
+	<link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'userprofile/css/profile.css' %}">
+	<link rel="stylesheet" href="{% static 'userprofile/css/admin.css' %}">
+{% endblock %}
+{% block content %}
+	<body>
+	<div class="background">
+		<div class="background-cover"></div>
+	</div>
+	<div class="wrapper row">
+		{% include 'userprofile/admin/admin_navbar.html' %}
+		<div class="col-sm-10">
+			<h3 class="header">На модерации</h3>
+			{% include 'main/common/pagination.html' %}
+			<div class="articles-wrapper col-sm-5" style="max-width: 90%; margin-top: 1%;">
+				{% for article in page %}
+					{% include 'userprofile/general/article-card.html' %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
