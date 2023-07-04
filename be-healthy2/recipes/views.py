@@ -124,7 +124,6 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
             instance.recipe = self.object
             instance.save()
         formset.save()
-        formset.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, formset):

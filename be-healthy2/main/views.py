@@ -2,10 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DetailView, CreateView, DeleteView
+from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
 
 from recipes.models import Product
 from .forms import CalculatorForm, MixerProductFormSet, MixerProductForm, CreateArticleForm
@@ -106,3 +106,41 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy('my articles')
     pk_url_kwarg = 'id'
+
+
+class ArticleUpdateView(LoginRequiredMixin, UpdateView):
+    model = Article
+    template_name = 'main/articles/edit_article.html'
+    form_class = CreateArticleForm
+    success_url = reverse_lazy('my articles')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.object
+        return kwargs
+
+    def get(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Article, id=self.kwargs['id'])
+        article = self.object
+        form = CreateArticleForm()
+        return self.render_to_response(self.get_context_data(article=article, form=form,
+                                                             category_names=article.categories.all().values_list(
+                                                                 'name', flat=True)))
+
+    def post(self, request, *args, **kwargs):
+        self.object = get_object_or_404(Article, id=self.kwargs['id'])
+        form = CreateArticleForm(request.POST, instance=self.object)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object.categories.clear()
+        self.object = form.save(commit=False)
+        form.instance.save()
+        form.save_m2m()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return redirect(self.get_success_url())
