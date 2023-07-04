@@ -133,3 +133,10 @@ def change_role(request, user_id):
     user.profile.role = 'A' if user.profile.role == 'U' else 'U'
     user.profile.save()
     return redirect(reverse_lazy('user management'))
+
+
+@user_passes_test(lambda u: is_admin(u))
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.delete()
+    return redirect(reverse_lazy('user management'))
