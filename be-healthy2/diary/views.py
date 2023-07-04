@@ -52,18 +52,22 @@ class MealCreateView(LoginRequiredMixin, CreateView):
     template_name = 'diary/diary.html'
     form_class = CreateMealForm
 
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.object = None
+
     def post(self, request, *args, **kwargs):
         self.object = None
         form = CreateMealForm(request.POST)
         formset = MealProductFormSet(request.POST)
         if form.is_valid() and formset.is_valid():
-            return self.form_valid(form, formset, request.user)
+            return self.form_valid(form, formset)
         else:
             return self.form_invalid(form, formset)
 
-    def form_valid(self, form, formset, user):
+    def form_valid(self, form, formset):
         self.object = form.save(commit=False)
-        self.object.user = user
+        self.object.user = self.request.user
 
         year, month, day = self.kwargs['year'], self.kwargs['month'], self.kwargs['day']
         date_string = f'{year}-{month}-{day}'
@@ -112,6 +116,10 @@ class MealUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'diary/diary.html'
     form_class = CreateMealForm
     formset_class = MealProductFormSet
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.object = None
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

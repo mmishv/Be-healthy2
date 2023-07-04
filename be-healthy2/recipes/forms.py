@@ -6,7 +6,7 @@ from .models import Recipe, Ingredient
 
 
 IngredientFormSet = custom_inlineformset_factory(
-    Recipe, Ingredient, extra=1, can_delete=True, can_delete_extra=True, fields=('product', 'unit', 'quantity'),
+    Recipe, Ingredient, extra=1, can_delete_extra=True, can_delete=True, fields=('product', 'unit', 'quantity'),
     widgets={
         'product': forms.Select(attrs={'class': 'form-control col-sm-6', 'required': 'true'}),
         'unit': forms.Select(attrs={'class': 'form-control col-sm-2', 'required': 'true'}),

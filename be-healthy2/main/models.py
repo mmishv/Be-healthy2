@@ -43,5 +43,3 @@ class Article(models.Model):
         verbose_name = 'статья'
         verbose_name_plural = 'статьи'
 
-
-

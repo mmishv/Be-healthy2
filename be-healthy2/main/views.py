@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
@@ -87,19 +87,26 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     form_class = CreateArticleForm
     success_url = reverse_lazy('my articles')
 
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.object = None
+
     def post(self, request, *args, **kwargs):
         form = CreateArticleForm(request.POST)
         if form.is_valid():
-            return self.form_valid(form, request.user)
+            return self.form_valid(form)
         else:
             return HttpResponseRedirect(self.get_success_url())
 
-    def form_valid(self, form, user):
+    def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.author = user
+        self.object.author = self.request.user
         self.object.save()
         form.save_m2m()
         return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class ArticleDeleteView(LoginRequiredMixin, DeleteView):
@@ -113,6 +120,10 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'main/articles/edit_article.html'
     form_class = CreateArticleForm
     success_url = reverse_lazy('my articles')
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.object = None
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -143,4 +154,5 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
-        return redirect(self.get_success_url())
+        return self.render_to_response(self.get_context_data(form=form))
+

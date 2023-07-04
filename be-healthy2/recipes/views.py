@@ -37,6 +37,10 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
     form_class = CreateRecipeForm
     success_url = reverse_lazy('main recipes')
 
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.object = None
+
     def get(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
@@ -50,13 +54,13 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
         form = CreateRecipeForm(request.POST, request.FILES)
         formset = IngredientFormSet(request.POST)
         if form.is_valid() and formset.is_valid():
-            return self.form_valid(form, formset, request.user)
+            return self.form_valid(form, formset)
         else:
             return self.form_invalid(form, formset)
 
-    def form_valid(self, form, formset, user):
+    def form_valid(self, form, formset):
         self.object = form.save(commit=False)
-        self.object.author = user
+        self.object.author = self.request.user
         self.object.save()
         form.save_m2m()
         formset.instance = self.object
@@ -80,6 +84,10 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     form_class = CreateRecipeForm
     formset_class = IngredientFormSet
     success_url = reverse_lazy('my recipes')
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.object = None
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
