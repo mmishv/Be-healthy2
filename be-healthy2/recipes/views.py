@@ -5,8 +5,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
 
-from recipes.forms import CreateRecipeForm, IngredientFormSet
-from recipes.models import Recipe, RecipeCategory
+from recipes.forms import CreateRecipeForm, IngredientFormSet, CreateProductForm
+from recipes.models import Recipe, RecipeCategory, Product
+from userprofile.views import AdminUserMixin
 
 
 def index(request):
@@ -136,3 +137,28 @@ class RecipeUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_invalid(self, form, formset):
         return redirect(self.get_success_url())
+
+
+class ProductCreateView(AdminUserMixin, CreateView):
+    model = Product
+    form_class = CreateProductForm
+    template_name = 'userprofile/admin/categories-products.html'
+
+    def get_success_url(self):
+        return reverse_lazy('product management')
+
+
+class ProductUpdateView(AdminUserMixin, UpdateView):
+    model = Product
+    form_class = CreateProductForm
+    template_name = 'userprofile/admin/categories-products.html'
+    pk_url_kwarg = 'id'
+
+    def get_success_url(self):
+        return reverse_lazy('product management')
+
+
+class ProductDeleteView(AdminUserMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy('product management')
+    pk_url_kwarg = 'id'

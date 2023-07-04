@@ -1,7 +1,7 @@
 from django.urls import path
 
 from main.views import ArticleCreateView, ArticleDeleteView, ArticleUpdateView
-from recipes.views import RecipeDeleteView, RecipeUpdateView
+from recipes.views import RecipeDeleteView, RecipeUpdateView, ProductCreateView, ProductUpdateView, ProductDeleteView
 from . import views
 
 urlpatterns = [
@@ -28,4 +28,7 @@ urlpatterns = [
      path('admin/delete-user/<int:user_id>', views.delete_user, name='delete user'),
 
      path('admin/products', views.admin_section_products, name='product management'),
+     path('admin/create-product', ProductCreateView.as_view(), name='create product'),
+     path('admin/edit-product/<int:id>', ProductUpdateView.as_view(), name='edit product'),
+     path('admin/delete-product/<int:id>', ProductDeleteView.as_view(), name='delete product')
 ]
