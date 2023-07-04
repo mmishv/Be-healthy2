@@ -2,7 +2,7 @@ from django import forms
 from django.forms import TextInput, Textarea, FileInput, NumberInput
 
 from diary.forms import custom_inlineformset_factory
-from .models import Recipe, Ingredient, Product
+from .models import Recipe, Ingredient, Product, RecipeCategory
 
 IngredientFormSet = custom_inlineformset_factory(
     Recipe, Ingredient, extra=1, can_delete_extra=True, can_delete=True, fields=('product', 'unit', 'quantity'),
@@ -46,4 +46,13 @@ class CreateProductForm(forms.ModelForm):
             'proteins': NumberInput(attrs={'class': "form-control col-sm-6", 'step': "0.01", 'required': 'true'}),
             'fats':  NumberInput(attrs={'class': "form-control col-sm-6", 'step': "0.01", 'required': 'true'}),
             'carbohydrates': NumberInput(attrs={'class': "form-control col-sm-6", 'step': "0.01", 'required': 'true'}),
+        }
+
+
+class CreateRecipeCategoryForm(forms.ModelForm):
+    class Meta:
+        model = RecipeCategory
+        fields = ('name', )
+        widgets = {
+            'name': TextInput(attrs={'placeholder': "Название", 'class': "form-control", 'required': 'true'}),
         }

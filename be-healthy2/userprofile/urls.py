@@ -1,7 +1,9 @@
 from django.urls import path
 
-from main.views import ArticleCreateView, ArticleDeleteView, ArticleUpdateView
-from recipes.views import RecipeDeleteView, RecipeUpdateView, ProductCreateView, ProductUpdateView, ProductDeleteView
+from main.views import ArticleCreateView, ArticleDeleteView, ArticleUpdateView, ArticleCategoryCreateView, \
+     ArticleCategoryUpdateView, ArticleCategoryDeleteView
+from recipes.views import RecipeDeleteView, RecipeUpdateView, ProductCreateView, ProductUpdateView, ProductDeleteView, \
+     RecipeCategoryCreateView, RecipeCategoryUpdateView, RecipeCategoryDeleteView
 from . import views
 
 urlpatterns = [
@@ -30,5 +32,15 @@ urlpatterns = [
      path('admin/products', views.admin_section_products, name='product management'),
      path('admin/create-product', ProductCreateView.as_view(), name='create product'),
      path('admin/edit-product/<int:id>', ProductUpdateView.as_view(), name='edit product'),
-     path('admin/delete-product/<int:id>', ProductDeleteView.as_view(), name='delete product')
+     path('admin/delete-product/<int:id>', ProductDeleteView.as_view(), name='delete product'),
+
+     path('admin/recipe-categories', views.admin_section_recipe_categories, name='recipe category management'),
+     path('admin/create-recipe-category', RecipeCategoryCreateView.as_view(), name='create recipe category'),
+     path('admin/edit-recipe-category/<int:id>', RecipeCategoryUpdateView.as_view(), name='edit recipe category'),
+     path('admin/delete-recipe-category/<int:id>', RecipeCategoryDeleteView.as_view(), name='delete recipe category'),
+
+     path('admin/article-categories', views.admin_section_article_categories, name='article category management'),
+     path('admin/create-article-category', ArticleCategoryCreateView.as_view(), name='create article category'),
+     path('admin/edit-article-category/<int:id>', ArticleCategoryUpdateView.as_view(), name='edit article category'),
+     path('admin/delete-article-category/<int:id>', ArticleCategoryDeleteView.as_view(), name='delete article category'),
 ]

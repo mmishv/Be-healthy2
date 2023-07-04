@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
 
-from recipes.forms import CreateRecipeForm, IngredientFormSet, CreateProductForm
+from recipes.forms import CreateRecipeForm, IngredientFormSet, CreateProductForm, CreateRecipeCategoryForm
 from recipes.models import Recipe, RecipeCategory, Product
 from userprofile.views import AdminUserMixin
 
@@ -155,10 +155,35 @@ class ProductUpdateView(AdminUserMixin, UpdateView):
     pk_url_kwarg = 'id'
 
     def get_success_url(self):
-        return reverse_lazy('product management')
+        return reverse_lazy('recipe category management')
 
 
 class ProductDeleteView(AdminUserMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('product management')
+    pk_url_kwarg = 'id'
+
+
+class RecipeCategoryCreateView(AdminUserMixin, CreateView):
+    model = RecipeCategory
+    form_class = CreateRecipeCategoryForm
+    template_name = 'userprofile/admin/categories-products.html'
+
+    def get_success_url(self):
+        return reverse_lazy('recipe category management')
+
+
+class RecipeCategoryUpdateView(AdminUserMixin, UpdateView):
+    model = RecipeCategory
+    form_class = CreateRecipeCategoryForm
+    template_name = 'userprofile/admin/categories-products.html'
+    pk_url_kwarg = 'id'
+
+    def get_success_url(self):
+        return reverse_lazy('recipe category management')
+
+
+class RecipeCategoryDeleteView(AdminUserMixin, DeleteView):
+    model = RecipeCategory
+    success_url = reverse_lazy('recipe category management')
     pk_url_kwarg = 'id'

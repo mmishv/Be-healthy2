@@ -8,8 +8,9 @@ from django.views import View
 from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
 
 from recipes.models import Product
-from .forms import CalculatorForm, MixerProductFormSet, MixerProductForm, CreateArticleForm
-from .models import Article
+from userprofile.views import AdminUserMixin
+from .forms import CalculatorForm, MixerProductFormSet, MixerProductForm, CreateArticleForm, CreateArticleCategoryForm
+from .models import Article, ArticleCategory
 
 
 def get_article_page(request):
@@ -155,4 +156,29 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
+
+
+class ArticleCategoryCreateView(AdminUserMixin, CreateView):
+    model = ArticleCategory
+    form_class = CreateArticleCategoryForm
+    template_name = 'userprofile/admin/categories-products.html'
+
+    def get_success_url(self):
+        return reverse_lazy('article category management')
+
+
+class ArticleCategoryUpdateView(AdminUserMixin, UpdateView):
+    model = ArticleCategory
+    form_class = CreateArticleCategoryForm
+    template_name = 'userprofile/admin/categories-products.html'
+    pk_url_kwarg = 'id'
+
+    def get_success_url(self):
+        return reverse_lazy('article category management')
+
+
+class ArticleCategoryDeleteView(AdminUserMixin, DeleteView):
+    model = ArticleCategory
+    success_url = reverse_lazy('article category management')
+    pk_url_kwarg = 'id'
 

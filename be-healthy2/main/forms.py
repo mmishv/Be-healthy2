@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import formset_factory, TextInput, NumberInput, Textarea
 
-from main.models import Article
+from main.models import Article, ArticleCategory
 from recipes.models import UNIT_CHOICES, Product
 
 SEX_CHOICES = [
@@ -71,4 +71,13 @@ class CreateArticleForm(forms.ModelForm):
             'full_text': Textarea(
                 attrs={'class': "form-control col-sm-8", 'required': 'true', 'rows': '5'}),
             'categories': forms.CheckboxSelectMultiple(),
+        }
+
+
+class CreateArticleCategoryForm(forms.ModelForm):
+    class Meta:
+        model = ArticleCategory
+        fields = ('name', )
+        widgets = {
+            'name': TextInput(attrs={'placeholder': "Название", 'class': "form-control", 'required': 'true'}),
         }

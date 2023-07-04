@@ -8,9 +8,10 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView
 
-from main.models import Article
-from recipes.forms import CreateProductForm
-from recipes.models import Recipe, Product
+from main.forms import CreateArticleCategoryForm
+from main.models import Article, ArticleCategory
+from recipes.forms import CreateProductForm, CreateRecipeCategoryForm
+from recipes.models import Recipe, Product, RecipeCategory
 from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm, MainInfoProfileForm
 from userprofile.models import Profile, RoleOptions
 
@@ -148,4 +149,20 @@ def admin_section_products(request):
     items = Product.objects.all().order_by('name')
     form = CreateProductForm()
     return render(request, 'userprofile/admin/categories-products.html', {'items': items, 'form': form,
-                                                                          'products': True})
+                                                                          'products': True, "color": "#98e294"})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_recipe_categories(request):
+    items = RecipeCategory.objects.all().order_by('name')
+    form = CreateRecipeCategoryForm()
+    return render(request, 'userprofile/admin/categories-products.html', {'items': items, 'form': form,
+                                                                          'recipe_categories': True, "color": "#e2c894"})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_article_categories(request):
+    items = ArticleCategory.objects.all().order_by('name')
+    form = CreateArticleCategoryForm()
+    return render(request, 'userprofile/admin/categories-products.html', {'items': items, 'form': form,
+                                                                          'article_categories': True, "color": "#e2c894"})
