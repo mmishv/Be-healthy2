@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import UpdateView
 
 from main.models import Article
-from recipes.models import Recipe
+from recipes.models import Recipe, Product
 from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm, MainInfoProfileForm
 from userprofile.models import Profile, RoleOptions
 
@@ -140,3 +140,9 @@ def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.delete()
     return redirect(reverse_lazy('user management'))
+
+
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_products(request):
+    items = Product.objects.all().order_by('name')
+    return render(request, 'userprofile/admin/categories-products.html', {'items': items, 'products': True})

@@ -35,7 +35,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     template_name = 'recipes/recipe_form.html'
     form_class = CreateRecipeForm
-    success_url = reverse_lazy('main recipes')
+    success_url = reverse_lazy('my recipes')
 
     def __init__(self, **kwargs):
         super().__init__()

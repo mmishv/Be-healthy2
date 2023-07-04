@@ -26,4 +26,6 @@ urlpatterns = [
      path('admin/users', views.admin_section_users, name='user management'),
      path('admin/change-role/<int:user_id>', views.change_role, name='change role'),
      path('admin/delete-user/<int:user_id>', views.delete_user, name='delete user'),
+
+     path('admin/products', views.admin_section_products, name='product management'),
 ]
