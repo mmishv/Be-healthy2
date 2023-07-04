@@ -1,6 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views import View
@@ -9,7 +9,22 @@ from django.views.generic import UpdateView
 from main.models import Article
 from recipes.models import Recipe
 from userprofile.forms import LoginForm, RegistrationForm, AboutMeProfileForm, MainInfoProfileForm
-from userprofile.models import Profile
+from userprofile.models import Profile, RoleOptions
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import user_passes_test
+
+
+class AdminUserMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.profile.role == RoleOptions.ADMIN
+
+    def handle_no_permission(self):
+        return JsonResponse({'message': 'Only administrators have access to this view'}, status=403)
+
+
+def is_admin(user):
+    return user.profile.role == RoleOptions.ADMIN
 
 
 @login_required
@@ -102,3 +117,8 @@ def my_articles(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'userprofile/general/my_articles.html', {'page': page})
+
+
+@user_passes_test(lambda u: u.is_admin)
+def admin_section(request):
+    pass
