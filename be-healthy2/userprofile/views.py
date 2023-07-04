@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import UpdateView
 
@@ -124,3 +125,11 @@ def my_articles(request):
 def admin_section_users(request):
     users = User.objects.all().order_by('username')
     return render(request, 'userprofile/admin/users.html', {'users': users, 'my_id': request.user.id})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def change_role(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.profile.role = 'A' if user.profile.role == 'U' else 'U'
+    user.profile.save()
+    return redirect(reverse_lazy('user management'))

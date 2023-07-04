@@ -52,7 +52,7 @@
 									{% if user.id != my_id %}
 										<div class="control-buttons">
 											<button type="submit" title="Назначить администратором"
-											        onclick="">
+											        onclick="window.location.href='{% url 'change role' user.id %}'">
 												<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
 												     fill="currentColor"
 												     class="bi bi-person-gear" viewBox="0 0 16 16">
@@ -79,15 +79,11 @@
 				</table>
 			</div>
 		</div>
-
 	</div>
 {% endblock %}
 {% block js %}
 	<script src="{% static 'main/js/tableSearch.js' %}"></script>
 	<script>
-        function changeProfileRole(id) {
-            window.location.href = '/change_role/' + parseInt(id);
-        }
 
         function deleteProfile(id) {
             window.location.href = '/delete_profile/' + parseInt(id);

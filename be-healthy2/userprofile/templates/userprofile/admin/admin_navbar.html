@@ -2,7 +2,7 @@
     <ul class="list-group">
         <li class="list-group-item">
             <button class="btn btn-primary back-btn" id="admin-btn">
-                <a href="/profile">
+                <a href="{% url 'about me' %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                          class="bi bi-box-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -14,7 +14,7 @@
             </button>
         </li>
         <li class="list-group-item">
-            <a class="nav-link" href="/admin">Пользователи</a></li>
+            <a class="nav-link" href="{% url 'user management' %}">Пользователи</a></li>
         <li class="list-group-item">
             <a class="nav-link" href="/products_management">База продуктов</a></li>
         <li class="list-group-item">

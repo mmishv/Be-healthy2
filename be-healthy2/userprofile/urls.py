@@ -23,5 +23,6 @@ urlpatterns = [
      path('delete-article/<int:id>', ArticleDeleteView.as_view(), name='delete article'),
      path('edit-article/<int:id>', ArticleUpdateView.as_view(), name='edit article'),
 
-     path('admin/users', views.admin_section_users, name='user management')
+     path('admin/users', views.admin_section_users, name='user management'),
+     path('admin/change-role/<int:user_id>', views.change_role, name='change role'),
 ]
