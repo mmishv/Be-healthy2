@@ -157,7 +157,8 @@ def admin_section_recipe_categories(request):
     items = RecipeCategory.objects.all().order_by('name')
     form = CreateRecipeCategoryForm()
     return render(request, 'userprofile/admin/categories-products.html', {'items': items, 'form': form,
-                                                                          'recipe_categories': True, "color": "#e2c894"})
+                                                                          'recipe_categories': True,
+                                                                          "color": "#e2c894"})
 
 
 @user_passes_test(lambda u: is_admin(u))
@@ -165,4 +166,33 @@ def admin_section_article_categories(request):
     items = ArticleCategory.objects.all().order_by('name')
     form = CreateArticleCategoryForm()
     return render(request, 'userprofile/admin/categories-products.html', {'items': items, 'form': form,
-                                                                          'article_categories': True, "color": "#e2c894"})
+                                                                          'article_categories': True,
+                                                                          "color": "#e2c894"})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_articles(request):
+    items = Article.objects.all().order_by('title')
+    return render(request, 'userprofile/admin/recipes-articles.html', {'items': items, 'articles': True,
+                                                                       "color": "#dab4e4"})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def delete_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    article.delete()
+    return redirect(reverse_lazy('articles management'))
+
+
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_recipes(request):
+    items = Recipe.objects.all().order_by('title')
+    return render(request, 'userprofile/admin/recipes-articles.html', {'items': items, 'recipes': True,
+                                                                       "color": "#a5a6db"})
+
+
+@user_passes_test(lambda u: is_admin(u))
+def delete_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    recipe.delete()
+    return redirect(reverse_lazy('recipes management'))

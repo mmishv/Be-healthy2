@@ -43,4 +43,10 @@ urlpatterns = [
      path('admin/create-article-category', ArticleCategoryCreateView.as_view(), name='create article category'),
      path('admin/edit-article-category/<int:id>', ArticleCategoryUpdateView.as_view(), name='edit article category'),
      path('admin/delete-article-category/<int:id>', ArticleCategoryDeleteView.as_view(), name='delete article category'),
+
+     path('admin/articles', views.admin_section_articles, name='articles management'),
+     path('admin/delete-article/<int:article_id>', views.delete_article, name='delete article admin'),
+
+     path('admin/recipes', views.admin_section_recipes, name='recipes management'),
+     path('admin/delete-recipe/<int:recipe_id>', views.delete_recipe, name='delete recipe admin'),
 ]
