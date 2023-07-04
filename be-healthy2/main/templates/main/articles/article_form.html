@@ -1,6 +1,6 @@
 {% extends 'main/common/header.html' %}
 {% load static %}
-{% block title %}Новый рецепт{% endblock %}
+{% block title %}{% if article %} Редактировать статью {% else%} Добавить статью {% endif %}{% endblock %}
 {% block head %}
 	<link rel="stylesheet" href="{% static 'recipes/css/new_recipe.css' %}">
 {% endblock %}

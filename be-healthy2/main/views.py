@@ -83,7 +83,7 @@ class MixerFormSetView(View):
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
-    template_name = 'main/articles/create_article.html'
+    template_name = 'main/articles/article_form.html'
     form_class = CreateArticleForm
     success_url = reverse_lazy('my articles')
 
@@ -117,7 +117,7 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
 
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
-    template_name = 'main/articles/edit_article.html'
+    template_name = 'main/articles/article_form.html'
     form_class = CreateArticleForm
     success_url = reverse_lazy('my articles')
 

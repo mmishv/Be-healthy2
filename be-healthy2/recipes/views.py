@@ -33,7 +33,7 @@ def category(request, category_id, slug):
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
-    template_name = 'recipes/new_recipe.html'
+    template_name = 'recipes/recipe_form.html'
     form_class = CreateRecipeForm
     success_url = reverse_lazy('main recipes')
 
@@ -80,7 +80,7 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
 
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = Recipe
-    template_name = 'recipes/edit_recipe.html'
+    template_name = 'recipes/recipe_form.html'
     form_class = CreateRecipeForm
     formset_class = IngredientFormSet
     success_url = reverse_lazy('my recipes')
