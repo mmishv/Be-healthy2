@@ -1,0 +1,158 @@
+/*header*/
+h3.header {
+    margin: 2% auto;
+    color: white;
+    text-align: center;
+}
+
+/*buttons*/
+.back-btn#admin-btn {
+    position: relative !important;
+    margin: auto !important;
+    border: none !important;
+    width: 100%;
+    right: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+.control-buttons {
+    display: flex;
+    justify-content: space-around;
+    vertical-align: middle;
+}
+
+.control-buttons button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    height: 2.5rem;
+}
+
+.control-buttons button:focus, .control-buttons button:focus-visible {
+    border: none !important;
+    outline: none !important;
+}
+
+.control-buttons svg {
+    vertical-align: middle;
+}
+
+#show-all-btn {
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem !important;
+    position: absolute;
+}
+
+.btn.btn-primary.save-btn {
+    margin: 3% auto 0 auto !important;
+    display: block !important;
+    background-color: #114630 !important;
+    width: 40%;
+}
+
+.btn.add-btn {
+    margin-left: 80%;
+    position: absolute;
+    background-color: #114630 !important;
+}
+
+/*pagination*/
+.pagination-wrapper {
+    text-align: -webkit-center;
+    text-align: center;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+.pagination .page-item .page-link, #show-all-btn {
+    color: #fff !important;
+    background-color: #97b445c4 !important;
+    border: 1px solid #dee2e64d !important;
+    opacity: 0.8 !important;
+}
+
+.pagination .page-item .page-link:active, #show-all-btn:active {
+    background-color: #137d51 !important;
+}
+
+/*table*/
+.scroll-table {
+    margin: auto !important;
+    background-color: white;
+}
+
+.scroll-table td, .scroll-table th {
+    text-align: center;
+    vertical-align: middle !important;
+    border: solid 1px #cfd4d9;
+}
+
+.scroll-table th {
+    font-weight: 500 !important;
+    border: none !important;
+}
+
+.us .scroll-table th {
+    background-color: #c1e45cc4;
+}
+
+/*scroll*/
+.scroll-table-body {
+    max-height: 60vh;
+    overflow-x: auto;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.scroll-table table {
+    width: 100%;
+    table-layout: fixed;
+    border: none;
+    margin: 0 !important;
+}
+
+.scroll-table-body thead {
+    visibility: collapse;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/*search*/
+#search {
+    margin: auto;
+}
+
+.rec #search, .rec .scroll-table, .us #search, .us .scroll-table {
+    width: 78% !important;
+}
+
+.simple #search, .simple .scroll-table {
+    width: 60% !important;
+}
+
+/*modal*/
+.modal.fade {
+    margin-left: 17% !important;
+    width: 83% !important;
+}
+
+input.form-control, label {
+    margin-bottom: 1rem !important;
+}

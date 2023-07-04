@@ -1,6 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.views import View
@@ -119,6 +120,7 @@ def my_articles(request):
     return render(request, 'userprofile/general/my_articles.html', {'page': page})
 
 
-@user_passes_test(lambda u: u.is_admin)
-def admin_section(request):
-    pass
+@user_passes_test(lambda u: is_admin(u))
+def admin_section_users(request):
+    users = User.objects.all().order_by('username')
+    return render(request, 'userprofile/admin/users.html', {'users': users, 'my_id': request.user.id})

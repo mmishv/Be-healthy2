@@ -22,4 +22,6 @@ urlpatterns = [
      path('create-article', ArticleCreateView.as_view(), name='create article'),
      path('delete-article/<int:id>', ArticleDeleteView.as_view(), name='delete article'),
      path('edit-article/<int:id>', ArticleUpdateView.as_view(), name='edit article'),
+
+     path('admin/users', views.admin_section_users, name='user management')
 ]
