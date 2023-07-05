@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'main',
     'userprofile',
     'recipes',
-    'diary'
+    'diary',
+    'api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

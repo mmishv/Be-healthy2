@@ -8,7 +8,8 @@ urlpatterns = [
     path('', include('main.urls')),
     path('profile/', include('userprofile.urls')),
     path('recipes/', include('recipes.urls')),
-    path('diary/', include('diary.urls'))
+    path('diary/', include('diary.urls')),
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:
