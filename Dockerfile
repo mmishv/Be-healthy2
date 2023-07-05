@@ -3,8 +3,6 @@ FROM python:3.10-alpine
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV APP_HOME=/usr/src/web
-RUN mkdir $APP_HOME/
-RUN mkdir $APP_HOME/staticfiles
 
 WORKDIR /usr/src/app
 
