@@ -8,20 +8,35 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/usr/src/app
+#      - .:/usr/src/app
+      - static_data:/usr/src/web/static/
+      - nginx_config:/usr/src/web/nginx/
     env_file:
       - ./.env.dev
     depends_on:
       - db
 
   db:
-    image: postgres:13
+    image: postgres:12
     environment:
       POSTGRES_DB: be_healthy2
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 78873483mmv
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    volumes:
+      - static_data:/usr/src/web/static
+      - ./media:/usr/src/web/media
+      - nginx_config:/etc/nginx/conf.d
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
+  static_data:
+  media_data:
+  nginx_config:
